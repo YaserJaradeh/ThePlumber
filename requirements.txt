@@ -1,2 +1,6 @@
-wget
-stanza
+numpy==1.18.2
+stanfordnlp==0.2.0
+wget==3.2
+torch===1.4.0
+torchvision==0.5.0
+consecution==0.2.0
