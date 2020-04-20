@@ -5,6 +5,7 @@ from subprocess import Popen
 from sys import stderr
 from zipfile import ZipFile
 import wget
+from nltk.parse.corenlp import CoreNLPParser
 
 
 class StanfordClient:
@@ -26,13 +27,17 @@ class StanfordClient:
         os.environ['CORENLP_HOME'] = str(self.install_dir / 'stanford-corenlp-full-2018-10-05')
         from stanfordnlp.server import CoreNLPClient
         self.client = CoreNLPClient(annotators=annotators, memory='8G')
+        self.parser = CoreNLPParser()
 
     def parse(self, text: str, properties_key: str = None, properties: dict = None, output_format='json'):
         core_nlp_output = self.client.annotate(text=text, annotators=['parse'], output_format=output_format,
                                                properties_key=properties_key, properties=properties)
         return core_nlp_output
 
-    def pos(self, text: str, properties_key: str = None, properties: dict = None, simple_format: bool = True):
+    def nltk_parse(self, text: str):
+        return [tree for tree in self.parser.raw_parse(text)][0]
+
+    def pos(self, text: str, properties_key: str = None, properties: dict = None):
         core_nlp_output = self.client.annotate(text=text, annotators=['pos'], output_format='json',
                                                properties_key=properties_key, properties=properties)
         return core_nlp_output

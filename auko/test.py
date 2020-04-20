@@ -1,5 +1,5 @@
 from auko.components import StanfordClient, OLLIEClient
-from auko.components import DependencyExtractor, OpenIEExtractor, KBPExtractor, OllieExtractor
+from auko.components import DependencyExtractor, OpenIEExtractor, KBPExtractor, OllieExtractor, POSExtractor
 
 if __name__ == '__main__':
     text = 'Barack Obama was born in Hawaii.  He was elected president in 2008.'
@@ -26,6 +26,15 @@ if __name__ == '__main__':
         triples = extractor.get_triples(text)
         for triple in triples:
             print('|-', triple)
+        ################################
+        print('=' * 40)
+        extractor = POSExtractor(client)
+        print(extractor.name)
+        print('^' * 30)
+        triples = extractor.get_triples(text)
+        for triple in triples:
+            print('|-', triple)
+        ################################
     with OLLIEClient() as client:
         print('=' * 40)
         extractor = OllieExtractor(client)
