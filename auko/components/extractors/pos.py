@@ -4,6 +4,7 @@ import operator
 import nltk
 
 
+# Adapted from https://github.com/tdpetrou/RDF-Triple-API/blob/master/rdf_triple.py
 class RdfSpo:
 
     def __init__(self, name, pos=''):
