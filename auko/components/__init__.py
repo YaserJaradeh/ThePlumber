@@ -8,3 +8,5 @@ from .extractors import OllieExtractor, POSExtractor
 # ===== Resolvers =====
 from .resolvers import BaseResolver, StanfordBasedResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
+# ===== Utils =====
+from .format import Chain, Span

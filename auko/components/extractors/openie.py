@@ -1,15 +1,14 @@
+from typing import List
 from auko.components.stanford import StanfordClient
 from auko.components.extractors.base import StanfordBasedExtractor
+from auko.components.format import Triple
 
 
 class OpenIEExtractor(StanfordBasedExtractor):
 
     def __init__(self, stanford_client: StanfordClient):
-        super().__init__(name='Open IE extractor', client=stanford_client)
+        super().__init__(name='Open IE extractor', key='openie', client=stanford_client)
 
-    def get_triples(self, text):
-        triples = self.client.openie(text)
-        # == Unify Output
-        # location in string
-        # sentence ID or number
-        return triples
+    def get_triples(self, text) -> List[Triple]:
+        response = self.client.openie(text, simple_format=False)
+        return self.transform_triples(response['sentences'], text)
