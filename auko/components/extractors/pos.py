@@ -177,12 +177,12 @@ class RdfTriple:
         new_attr_words = []
         new_attr_trees = []
         for tup in attr:
-            if isinstance(tup[0], str):
+            if not isinstance(tup[0], str):
                 # if type(tup[0]) != unicode:
                 if tup[0].height() == 2:
                     new_attr_words.append((tup[0].leaves()[0], tup[0].label()))
                 else:
-                    new_attr_trees.append(tup[0].unicode_repr())
+                    new_attr_trees.append(str(tup[0]))
             else:
                 new_attr_words.append(tup)
         return new_attr_words, new_attr_trees
