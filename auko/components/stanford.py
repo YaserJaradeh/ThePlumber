@@ -46,15 +46,7 @@ class StanfordClient:
         core_nlp_output = self.client.annotate(text=text, annotators=['kbp'], output_format='json',
                                                properties_key=properties_key, properties=properties)
         if simple_format:
-            triples = []
-            for sentence in core_nlp_output['sentences']:
-                for triple in sentence['kbp']:
-                    triples.append({
-                        'subject': triple['subject'],
-                        'relation': triple['relation'],
-                        'object': triple['object']
-                    })
-            return triples
+            return self.__parse_triples(core_nlp_output, key='kbp')
         else:
             return core_nlp_output
 
@@ -70,17 +62,33 @@ class StanfordClient:
         core_nlp_output = self.client.annotate(text=text, annotators=['openie'], output_format='json',
                                                properties_key=properties_key, properties=properties)
         if simple_format:
-            triples = []
-            for sentence in core_nlp_output['sentences']:
-                for triple in sentence['openie']:
-                    triples.append({
-                        'subject': triple['subject'],
-                        'relation': triple['relation'],
-                        'object': triple['object']
-                    })
-            return triples
+            return self.__parse_triples(core_nlp_output, key='openie')
         else:
             return core_nlp_output
+
+    @staticmethod
+    def __parse_triples(core_nlp_output, key):
+        triples = []
+        for sentence in core_nlp_output['sentences']:
+            for triple in sentence[key]:
+                triples.append({
+                    'subject': triple['subject'],
+                    'relation': triple['relation'],
+                    'object': triple['object']
+                })
+        return triples
+
+    def coref(self, text: str, properties_key: str = None, properties: dict = None, simple_format: bool = True):
+        core_nlp_output = self.client.annotate(text=text, annotators=['dcoref'], output_format='json',
+                                               properties_key=properties_key, properties=properties)
+        if simple_format:
+            chains = []
+            for _, chain in core_nlp_output['corefs'].items():
+                if len(chain) > 1:
+                    # there is a coreference found
+                    chains.append([link['text'] for link in chain])
+            return chains
+        return core_nlp_output
 
     def generate_graphviz_graph(self, text: str, png_filename: str = './out/graph.png'):
         """
