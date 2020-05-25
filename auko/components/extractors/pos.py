@@ -1,5 +1,7 @@
+from typing import List
 from auko.components.stanford import StanfordClient
 from auko.components.extractors.base import StanfordBasedExtractor
+from auko.components.format import Triple
 import operator
 import nltk
 
@@ -206,7 +208,7 @@ class RdfTriple:
         self.find_predicate(self.first_VP)
         if self.subject.word == '' and self.first_NP != '':
             self.subject.word = self.first_NP.leaves()[0]
-        self.predicate.word, self.predicate.depth, self.predicate.parent, self.predicate.grandparent =\
+        self.predicate.word, self.predicate.depth, self.predicate.parent, self.predicate.grandparent = \
             self.find_deepest_predicate()
         self.find_object()
         self.subject.attr, self.subject.attr_trees = self.get_attributes(self.subject.pos, self.subject.parent,
@@ -226,16 +228,38 @@ class POSExtractor(StanfordBasedExtractor):
     def __init__(self, stanford_client: StanfordClient):
         super().__init__(name='POS-based extractor', client=stanford_client)
 
-    def get_triples(self, text):
+    def get_triples(self, text) -> List[Triple]:
         sentences = nltk.sent_tokenize(text)
         triples = []
-        for sentence in sentences:
+        for sentence_idx, sentence in enumerate(sentences):
             parsed_text = self.client.nltk_parse(sentence)
-            triple = RdfTriple(text)
-            result = triple.get_triples(parsed_text)
-            triples.append({
-                'subject': result['rdf'][0],
-                'relation': result['rdf'][1],
-                'object': result['rdf'][2]
-            })
+            text_triple = RdfTriple(text)
+            result = text_triple.get_triples(parsed_text)
+            subj = result['rdf'][0]
+            pred = result['rdf'][1]
+            obj = result['rdf'][2]
+            triple = Triple()
+            start_idx = sentence.find(subj) + sum([len(s) for s in sentences[:sentence_idx]]) + (
+                    text[:text.find(sentence) + len(sentence)].count(' ')
+                    - sum([s.count(' ') for s in sentences[:sentence_idx+1]]))
+            end_idx = start_idx + len(subj)
+            triple.add_subject(subj, start_idx, end_idx, text)
+            ##########################
+            start_idx = sentence.find(pred) + sum([len(s) for s in sentences[:sentence_idx]]) + (
+                    text[:text.find(sentence) + len(sentence)].count(' ')
+                    - sum([s.count(' ') for s in sentences[:sentence_idx+1]]))
+            end_idx = start_idx + len(pred)
+            triple.add_predicate(pred, start_idx, end_idx, text)
+            ##########################
+            start_idx = sentence.find(obj) + sum([len(s) for s in sentences[:sentence_idx]]) + (
+                    text[:text.find(sentence) + len(sentence)].count(' ')
+                    - sum([s.count(' ') for s in sentences[:sentence_idx+1]]))
+            end_idx = start_idx + len(obj)
+            triple.add_object(obj, start_idx, end_idx, text)
+            # triples.append({
+            #     'subject': result['rdf'][0],
+            #     'relation': result['rdf'][1],
+            #     'object': result['rdf'][2]
+            # })
+            triples.append(triple)
         return triples
