@@ -52,3 +52,24 @@ class Chain:
 
     def __repr__(self) -> str:
         return self.__str__()
+
+
+class Triple:
+    subject: Span = None
+    predicate: Span = None
+    object: Span = None
+
+    def add_subject(self, surface_form: str, start: int, end: int, text: str):
+        self.subject = Span(start, end, surface_form, text)
+
+    def add_predicate(self, surface_form: str, start: int, end: int, text: str):
+        self.predicate = Span(start, end, surface_form, text)
+
+    def add_object(self, surface_form: str, start: int, end: int, text: str):
+        self.object = Span(start, end, surface_form, text)
+
+    def __str__(self) -> str:
+        return f"<{self.subject}, {self.predicate}, {self.object}>"
+
+    def __repr__(self) -> str:
+        return self.__str__()
