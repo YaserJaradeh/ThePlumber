@@ -4,6 +4,9 @@ wget==3.2
 torch===1.4.0
 torchvision==0.5.0
 consecution==0.2.0
-pandas
+pandas==1.0.3
 nltk==3.5
 # need nltk.download('punkt')
+spacy==2.1.0
+# need python -m spacy download en
+neuralcoref===4.0
