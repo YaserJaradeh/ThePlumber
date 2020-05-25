@@ -22,6 +22,9 @@ class Span:
     def __hash__(self) -> int:
         return super().__hash__()
 
+    def __repr__(self) -> str:
+        return self.__str__()
+
 
 class Chain:
     """
@@ -45,4 +48,7 @@ class Chain:
         self.aliases.append(Span(start, end, mention, text))
 
     def __str__(self) -> str:
-        return f"{self.main} a.k.a. [{', '.join([m.text for m in self.aliases])}]"
+        return f"{self.main} a.k.a. [{', '.join([m.surface_form for m in self.aliases])}]"
+
+    def __repr__(self) -> str:
+        return self.__str__()
