@@ -28,7 +28,7 @@ class Span:
 
 class Chain:
     """
-    Corefernce chain class representation, contains the main token with it's aliases
+    Coreference chain class representation, contains the main token with it's aliases
     """
     main: str = None
     aliases: List[Span] = None
@@ -55,17 +55,41 @@ class Chain:
 
 
 class Triple:
+    """
+    A triple representation of the shape <S, P, O>, each component is a Span object
+    """
     subject: Span = None
     predicate: Span = None
     object: Span = None
 
     def add_subject(self, surface_form: str, start: int, end: int, text: str):
+        """
+        Add the subject part to the triple object
+        :param surface_form: the string surface form of the subject
+        :param start: the start index of the subject in the text
+        :param end: the end index of the subject in the text
+        :param text: the text where the triple is extracted from
+        """
         self.subject = Span(start, end, surface_form, text)
 
     def add_predicate(self, surface_form: str, start: int, end: int, text: str):
+        """
+        Add the predicate part to the triple object
+        :param surface_form: the string surface form of the predicate
+        :param start: the start index of the predicate in the text
+        :param end: the end index of the predicate in the text
+        :param text: the text where the triple is extracted from
+        """
         self.predicate = Span(start, end, surface_form, text)
 
     def add_object(self, surface_form: str, start: int, end: int, text: str):
+        """
+        Add the object part to the triple object
+        :param surface_form: the string surface form of the object
+        :param start: the start index of the object in the text
+        :param end: the end index of the object in the text
+        :param text: the text where the triple is extracted from
+        """
         self.object = Span(start, end, surface_form, text)
 
     def __str__(self) -> str:
