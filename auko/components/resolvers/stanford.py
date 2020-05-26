@@ -1,5 +1,5 @@
 from typing import List
-from auko.components.stanford import StanfordClient
+from auko.components.clients.stanford import StanfordClient
 from auko.components.resolvers.base import StanfordBasedResolver
 from auko.components.format import Chain
 

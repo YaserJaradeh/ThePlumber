@@ -1,6 +1,5 @@
 # ===== Clients =====
-from .stanford import StanfordClient
-from .ollie import OLLIEClient
+from auko.components.clients import OLLIEClient, StanfordClient
 # ===== Extractors =====
 from .extractors import BaseExtractor, StanfordBasedExtractor
 from .extractors import DependencyExtractor, OpenIEExtractor, KBPExtractor

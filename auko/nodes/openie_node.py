@@ -1,5 +1,5 @@
 from consecution import Node
-from auko.components.stanford import StanfordClient
+from auko.components.clients.stanford import StanfordClient
 from typing import List
 
 

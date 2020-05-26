@@ -39,9 +39,10 @@ class OLLIEClient:
             os.chdir(os.environ['OLLIE_HOME'])
 
             sp = Popen(['java',
-                        '-Xmx512m',
+                        '-Xmx2g',
                         '-jar',
                         str(self.install_dir / 'ollie-app-latest.jar'),
+                        '--parallel',
                         '--output-format',
                         'tabbed',
                         to_extract],

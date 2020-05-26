@@ -106,7 +106,7 @@ class StanfordClient:
             graph.append('"{}" -> "{}" [ label="{}" ];'.format(er['subject'], er['object'], er['relation']))
         graph.append('}')
 
-        output_dir = os.path.join('.', os.path.dirname(png_filename))
+        output_dir = os.path.join('..', os.path.dirname(png_filename))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 

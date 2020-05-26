@@ -1,5 +1,5 @@
 from typing import List
-from auko.components.ollie import OLLIEClient
+from auko.components.clients.ollie import OLLIEClient
 from auko.components.extractors.base import OllieBasedExtractor
 from auko.components.format import Triple
 import nltk

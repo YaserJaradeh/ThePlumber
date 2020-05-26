@@ -1,5 +1,5 @@
 from typing import List
-from auko.components.stanford import StanfordClient
+from auko.components.clients.stanford import StanfordClient
 from auko.components.extractors.base import StanfordBasedExtractor
 from auko.components.format import Triple
 from xml.dom.minidom import parseString
