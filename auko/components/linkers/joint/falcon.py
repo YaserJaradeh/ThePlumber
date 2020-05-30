@@ -2,6 +2,8 @@ from auko.components.linkers.base import BaseJointLinker, BaseWebLinker
 from typing import List, Tuple
 
 
+# Implementing API detailed in https://labs.tib.eu/falcon/falcon2/api-use
+# TODO: Use Top-K because it is supported
 class FalconJointLinker(BaseJointLinker, BaseWebLinker):
 
     def __init__(self):

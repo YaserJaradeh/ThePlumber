@@ -2,6 +2,7 @@ from auko.components.linkers.base import BaseEntityLinker, BaseWebLinker
 from typing import List, Tuple
 
 
+# Implementing API detailed in https://www.dbpedia-spotlight.org/api
 class DBpediaSpotlightEntityLinker(BaseEntityLinker, BaseWebLinker):
 
     def __init__(self):

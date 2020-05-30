@@ -2,6 +2,7 @@ from auko.components.linkers.base import BaseEntityLinker, BaseWebLinker
 from typing import List, Tuple
 
 
+# Implementing API used in https://opentapioca.org/#
 class OpenTapiocaEntityLinker(BaseEntityLinker, BaseWebLinker):
 
     def __init__(self):
