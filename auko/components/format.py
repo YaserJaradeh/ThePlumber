@@ -92,8 +92,45 @@ class Triple:
         """
         self.object = Span(start, end, surface_form, text)
 
+    @property
+    def as_text(self):
+        return f"{self.subject} {self.predicate} {self.object}"
+
     def __str__(self) -> str:
         return f"<{self.subject}, {self.predicate}, {self.object}>"
+
+    def __repr__(self) -> str:
+        return self.__str__()
+
+
+class Pair:
+    """
+    A class representing a pair of values, used for linking, pairs the span and the mapping from a KG
+    """
+    span: Span = None
+    mapping: str = None
+
+    def __init__(self, span: Span, mapping: str):
+        self.span = span
+        self.mapping = mapping
+
+    @property
+    def left(self) -> Span:
+        """
+        Left side of the pair
+        :return: a Span
+        """""
+        return self.span
+
+    def right(self) -> str:
+        """
+        right side of the pair
+        :return: a string of the mapping
+        """
+        return self.mapping
+
+    def __str__(self) -> str:
+        return f"({self.left}, {self.right})"
 
     def __repr__(self) -> str:
         return self.__str__()

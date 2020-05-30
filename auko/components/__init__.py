@@ -7,5 +7,8 @@ from .extractors import OllieExtractor, POSExtractor
 # ===== Resolvers =====
 from .resolvers import BaseResolver, StanfordBasedResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
+# ===== Linkers =====
+from .linkers import FalconJointLinker, FalconJoinLinkerDBpedia, FalconJoinLinkerWikidata
+from .linkers import FalconEntityLinkerWikidata, FalconEntityLinkerDBpedia
 # ===== Utils =====
-from .format import Chain, Span
+from .format import Chain, Span, Triple, Pair

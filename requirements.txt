@@ -10,3 +10,4 @@ nltk==3.5
 spacy==2.1.0
 # need python -m spacy download en
 neuralcoref===4.0
+hammock==0.2.4

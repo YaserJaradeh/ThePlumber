@@ -1,0 +1,1 @@
+from .falcon import FalconEntityLinkerDBpedia, FalconEntityLinkerWikidata

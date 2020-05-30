@@ -1,6 +1,7 @@
 from auko.components import StanfordClient, OLLIEClient
 from auko.components import DependencyExtractor, OpenIEExtractor, KBPExtractor, OllieExtractor, POSExtractor
 from auko.components import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
+from auko.components import FalconJoinLinkerDBpedia, FalconEntityLinkerDBpedia
 
 
 def test_extractors(text: str):
@@ -46,7 +47,7 @@ def test_extractors(text: str):
             print('|-', triple)
 
 
-def test_coref_resolvers():
+def test_coref_resolvers(text):
     with StanfordClient() as client:
         resolver = StanfordCoreferenceResolver(client)
         chains = resolver.get_coreference_chains(text)
@@ -63,17 +64,12 @@ def test_coref_resolvers():
 
 
 if __name__ == '__main__':
-    text = '''Despite improved digital access to scholarly knowledge in recent decades,
+    old_test = '''Despite improved digital access to scholarly knowledge in recent decades,
     scholarly communication remains exclusively document-based.
     In this form, scholarly knowledge is hard to process automatically.'''
-    text = "Barack Obama was born in Hawaii. He was elected president in 2008. He is the first black president of the USA. The United states of america is one of the biggest countries of the world, it is also one of the richest."
-    # test_extractors(text)
-    # test_coref_resolvers(text)
-    with OLLIEClient() as client:
-        print('=' * 40)
-        extractor = OllieExtractor(client)
-        print(extractor.name)
-        print('^' * 30)
-        triples = extractor.get_triples(text)
-        for triple in triples:
-            print('|-', triple)
+    test = "Barack Obama was born in Hawaii. He was elected president in 2008."
+    # test_extractors(test)
+    # test_coref_resolvers(test)
+    linker = FalconEntityLinkerDBpedia()
+    x = linker.get_entities("Who is the wife of barack obama ?")
+
