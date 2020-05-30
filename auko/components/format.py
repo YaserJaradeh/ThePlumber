@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, AnyStr
 
 
 class Span:
@@ -7,22 +7,22 @@ class Span:
     """
     start: int = None
     end: int = None
-    surface_form: str = None
-    text: str = None
+    surface_form: AnyStr = None
+    text: AnyStr = None
 
-    def __init__(self, start: int, end: int, surface_form: str, text: str):
+    def __init__(self, start: int, end: int, surface_form: AnyStr, text: AnyStr):
         self.start = start
         self.end = end
         self.surface_form = surface_form
         self.text = text
 
-    def __str__(self) -> str:
+    def __str__(self) -> AnyStr:
         return self.surface_form
 
     def __hash__(self) -> int:
         return super().__hash__()
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> AnyStr:
         return self.__str__()
 
 
@@ -30,14 +30,14 @@ class Chain:
     """
     Coreference chain class representation, contains the main token with it's aliases
     """
-    main: str = None
+    main: AnyStr = None
     aliases: List[Span] = None
 
-    def __init__(self, main: str):
+    def __init__(self, main: AnyStr):
         self.main = main
         self.aliases = []
 
-    def add_alias(self, mention: str, start: int, end: int, text: str):
+    def add_alias(self, mention: AnyStr, start: int, end: int, text: AnyStr):
         """
         Adds an alias to the main token of this chain
         :param mention: the alias surface form
@@ -47,10 +47,10 @@ class Chain:
         """
         self.aliases.append(Span(start, end, mention, text))
 
-    def __str__(self) -> str:
+    def __str__(self) -> AnyStr:
         return f"{self.main} a.k.a. [{', '.join([m.surface_form for m in self.aliases])}]"
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> AnyStr:
         return self.__str__()
 
 
@@ -62,7 +62,7 @@ class Triple:
     predicate: Span = None
     object: Span = None
 
-    def add_subject(self, surface_form: str, start: int, end: int, text: str):
+    def add_subject(self, surface_form: AnyStr, start: int, end: int, text: AnyStr):
         """
         Add the subject part to the triple object
         :param surface_form: the string surface form of the subject
@@ -72,7 +72,7 @@ class Triple:
         """
         self.subject = Span(start, end, surface_form, text)
 
-    def add_predicate(self, surface_form: str, start: int, end: int, text: str):
+    def add_predicate(self, surface_form: AnyStr, start: int, end: int, text: AnyStr):
         """
         Add the predicate part to the triple object
         :param surface_form: the string surface form of the predicate
@@ -82,7 +82,7 @@ class Triple:
         """
         self.predicate = Span(start, end, surface_form, text)
 
-    def add_object(self, surface_form: str, start: int, end: int, text: str):
+    def add_object(self, surface_form: AnyStr, start: int, end: int, text: AnyStr):
         """
         Add the object part to the triple object
         :param surface_form: the string surface form of the object
@@ -96,10 +96,28 @@ class Triple:
     def as_text(self):
         return f"{self.subject} {self.predicate} {self.object}"
 
-    def __str__(self) -> str:
+    def __str__(self) -> AnyStr:
         return f"<{self.subject}, {self.predicate}, {self.object}>"
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> AnyStr:
+        return self.__str__()
+
+
+class SPOTriple:
+    """
+    Class representing the final form of the triple after being processed by many components
+    This class is used in the output only, and does not contain any information other than the surface form of the SPO
+    """
+
+    def __init__(self, subject: AnyStr, predicate: AnyStr, object: AnyStr):
+        self.subject = subject
+        self.predicate = predicate
+        self.object = object
+
+    def __str__(self) -> AnyStr:
+        return f"<{self.subject}> <{self.predicate}> <{self.object}>"
+
+    def __repr__(self) -> AnyStr:
         return self.__str__()
 
 
@@ -108,9 +126,9 @@ class Pair:
     A class representing a pair of values, used for linking, pairs the span and the mapping from a KG
     """
     span: Span = None
-    mapping: str = None
+    mapping: AnyStr = None
 
-    def __init__(self, span: Span, mapping: str):
+    def __init__(self, span: Span, mapping: AnyStr):
         self.span = span
         self.mapping = mapping
 
@@ -122,15 +140,15 @@ class Pair:
         """""
         return self.span
 
-    def right(self) -> str:
+    def right(self) -> AnyStr:
         """
         right side of the pair
         :return: a string of the mapping
         """
         return self.mapping
 
-    def __str__(self) -> str:
+    def __str__(self) -> AnyStr:
         return f"({self.left}, {self.right})"
 
-    def __repr__(self) -> str:
+    def __repr__(self) -> AnyStr:
         return self.__str__()
