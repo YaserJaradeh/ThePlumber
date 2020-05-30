@@ -10,5 +10,6 @@ from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolv
 # ===== Linkers =====
 from .linkers import FalconJointLinker, FalconJoinLinkerDBpedia, FalconJoinLinkerWikidata
 from .linkers import FalconEntityLinkerWikidata, FalconEntityLinkerDBpedia
+from .linkers import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker
 # ===== Utils =====
 from .format import Chain, Span, Triple, Pair

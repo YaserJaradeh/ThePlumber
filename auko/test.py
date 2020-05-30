@@ -1,7 +1,7 @@
 from auko.components import StanfordClient, OLLIEClient
 from auko.components import DependencyExtractor, OpenIEExtractor, KBPExtractor, OllieExtractor, POSExtractor
 from auko.components import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
-from auko.components import FalconJoinLinkerDBpedia, FalconEntityLinkerDBpedia
+from auko.components import OpenTapiocaEntityLinker
 
 
 def test_extractors(text: str):
@@ -70,6 +70,6 @@ if __name__ == '__main__':
     test = "Barack Obama was born in Hawaii. He was elected president in 2008."
     # test_extractors(test)
     # test_coref_resolvers(test)
-    linker = FalconJoinLinkerDBpedia()
-    x = linker.get_entities_and_relations("Who is the wife of barack obama ?")
+    linker = OpenTapiocaEntityLinker()
+    x = linker.get_entities("Who is the wife of Barack Obama ?")
 
