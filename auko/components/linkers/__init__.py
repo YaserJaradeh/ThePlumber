@@ -7,3 +7,4 @@ from .entity import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker
 
 # ======= Joint linkers =======
 from .joint import FalconJointLinker, FalconJoinLinkerWikidata, FalconJoinLinkerDBpedia
+from .joint import EARLJointLinker
