@@ -1,5 +1,4 @@
-from auko.components.format import Triple, Pair
-from typing import List
+from typing import List, Tuple
 
 
 class BaseEntityLinker:
@@ -9,7 +8,7 @@ class BaseEntityLinker:
     def __init__(self, name: str = 'Base Entity Linker'):
         self.name = name
 
-    def get_entities(self, text: str):
+    def get_entities(self, text: str) -> List[Tuple[str, str]]:
         pass
 
 
@@ -20,7 +19,7 @@ class BaseRelationLinker:
     def __init__(self, name: str = 'Base Relation Linker'):
         self.name = name
 
-    def get_relations(self, text: str):
+    def get_relations(self, text: str) -> List[Tuple[str, str]]:
         pass
 
 
@@ -31,5 +30,5 @@ class BaseJointLinker:
     def __init__(self, name: str = 'Base Joint (relation and entity) Linker'):
         self.name = name
 
-    def get_entities_and_relations(self, text: str):
+    def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
         pass

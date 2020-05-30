@@ -70,6 +70,6 @@ if __name__ == '__main__':
     test = "Barack Obama was born in Hawaii. He was elected president in 2008."
     # test_extractors(test)
     # test_coref_resolvers(test)
-    linker = FalconEntityLinkerDBpedia()
-    x = linker.get_entities("Who is the wife of barack obama ?")
+    linker = FalconJoinLinkerDBpedia()
+    x = linker.get_entities_and_relations("Who is the wife of barack obama ?")
 
