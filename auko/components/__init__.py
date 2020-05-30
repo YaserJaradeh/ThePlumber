@@ -12,5 +12,9 @@ from .linkers import FalconJointLinker, FalconJoinLinkerDBpedia, FalconJoinLinke
 from .linkers import FalconEntityLinkerWikidata, FalconEntityLinkerDBpedia
 from .linkers import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker
 from .linkers import EARLJointLinker
+# ===== Readers =====
+from .readers import BaseReader, StandardReader, RawFileReader
+# ===== Writers =====
+from .writers import StandardWriter, FileWriter, BaseWriter
 # ===== Utils =====
-from .format import Chain, Span, Triple, Pair
+from .format import Chain, Span, Triple, Pair, SPOTriple
