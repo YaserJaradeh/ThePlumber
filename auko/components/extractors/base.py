@@ -9,7 +9,7 @@ class BaseExtractor:
     def __init__(self, name: str = 'Base Extractor'):
         self.name = name
 
-    def get_triples(self, text: str):
+    def get_triples(self, text: str) -> List[Triple]:
         pass
 
 
