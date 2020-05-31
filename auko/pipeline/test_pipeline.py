@@ -1,5 +1,6 @@
 from consecution import Node, Pipeline
-from auko.nodes.openie_node import DummyNode, OpenIENode, SmartNode
+from auko.nodes.nodes import ExtractionNode, ReadingNode
+from auko.components import StandardReader, OpenIEExtractor, StanfordClient
 
 
 # This is the same node class we defined above
@@ -11,7 +12,12 @@ class LogNode(Node):
 
 if __name__ == '__main__':
     # Connect nodes with pipe symbols to create pipeline for consuming any iterable.
+    client = StanfordClient()
     pipe = Pipeline(
-        OpenIENode('extract') | DummyNode('transform') | SmartNode('load') | LogNode("write")
+        ReadingNode('Reader', StandardReader()) |
+        ExtractionNode('Extractor', OpenIEExtractor(client)) |
+        LogNode('Output')
     )
-    pipe.consume([[1,2,3]])
+    pipe.consume([1])
+    print(pipe)
+    client.__del__()
