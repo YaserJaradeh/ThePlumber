@@ -1,5 +1,5 @@
 from typing import List
-from auko.components import SPOTriple
+from auko.components.format import SPOTriple
 
 
 class BaseWriter:

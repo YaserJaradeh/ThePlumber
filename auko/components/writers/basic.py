@@ -1,6 +1,6 @@
 from .base import BaseWriter
 from typing import List, AnyStr
-from auko.components import SPOTriple
+from auko.components.format import SPOTriple
 
 
 class StandardWriter(BaseWriter):
