@@ -8,6 +8,7 @@ from .extractors import OllieExtractor, POSExtractor
 from .resolvers import BaseResolver, StanfordBasedResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
 # ===== Linkers =====
+from .linkers import BaseEntityLinker, BaseRelationLinker, BaseJointLinker
 from .linkers import FalconJointLinker, FalconJoinLinkerDBpedia, FalconJoinLinkerWikidata
 from .linkers import FalconEntityLinkerWikidata, FalconEntityLinkerDBpedia
 from .linkers import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker
