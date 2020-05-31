@@ -1,6 +1,6 @@
 from consecution import Node, Pipeline, GlobalState
-from auko.nodes.nodes import ExtractionNode, ReadingNode, ResolutionNode
-from auko.components import StandardReader, OpenIEExtractor, StanfordClient, SpacyNeuralCoreferenceResolver
+from auko.nodes.nodes import ExtractionNode, ReadingNode, ResolutionNode, ProcessingNode, WritingNode, JointLinkingNode
+from auko.components import StandardReader, OpenIEExtractor, StanfordClient, SpacyNeuralCoreferenceResolver, StandardWriter, EARLJointLinker
 
 
 # This is the same node class we defined above
@@ -15,8 +15,10 @@ if __name__ == '__main__':
     client = StanfordClient()
     pipe = Pipeline(
         ReadingNode('Reader', StandardReader())
-        | [ExtractionNode('Extractor', OpenIEExtractor(client)), ResolutionNode('Resolution', SpacyNeuralCoreferenceResolver())]
-        | LogNode('Output'),
+        | [(ExtractionNode('Extractor', OpenIEExtractor(client)) | JointLinkingNode('Linker', EARLJointLinker())),
+           ResolutionNode('Resolution', SpacyNeuralCoreferenceResolver())]
+        | ProcessingNode('Processer')
+        | WritingNode('Writer', StandardWriter()),
         global_state=GlobalState(triples=[], caller=None)
     )
     pipe.consume([1])

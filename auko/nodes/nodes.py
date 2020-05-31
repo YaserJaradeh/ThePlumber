@@ -170,23 +170,22 @@ class ProcessingNode(Node):
 
     def process(self, item):
         caller = self.global_state.caller
-        if isinstance(caller, BaseResolver):
+        if isinstance(caller, ResolutionNode):
             self.chains = item
-        if isinstance(caller, BaseEntityLinker):
+        if isinstance(caller, EntityLinkingNode):
             self.entities = item
-        if isinstance(caller, BaseRelationLinker):
+        if isinstance(caller, RelationLinkingNode):
             self.relations = item
-        if isinstance(caller, BaseJointLinker):
+        if isinstance(caller, JointLinkingNode):
             self.entities = item[0]
             self.relations = item[1]
 
     def end(self):
         self.triples = self.global_state.triples
-        self.process_data()
+        final_result = self.process_data()
         self.global_state.caller = self
-        self.push(self.result)
+        self.push(final_result)
 
-    def process_data(self):
-        print("here")
-        pass
+    def process_data(self) -> List[SPOTriple]:
+        return [t.as_text for t in self.triples]
 
