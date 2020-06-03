@@ -6,6 +6,27 @@ from typing import List, AnyStr
 import itertools
 
 
+class AggregationNode(Node):
+    """
+    An aggregation node, generic node can be used to collect results from other nodes
+    """
+
+    def __init__(self, name: AnyStr, **kwargs):
+        super().__init__(name, **kwargs)
+
+    def begin(self):
+        self.results = None
+
+    def process(self, item):
+        if self.results is None:
+            self.results = type(item)()
+        self.results = self.results + item
+
+    def end(self):
+        self.global_state.caller = self
+        self.push(self.results)
+
+
 class ReadingNode(Node):
     """
     A reader node, should be first node in a pipeline
