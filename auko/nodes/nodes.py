@@ -58,7 +58,10 @@ class ExtractionNode(Node):
         # item here is the text (str)
         # process text into triples using extractor
         result = self.extractor.get_triples(text=item)
-        self.global_state.triples = result
+        if len(self.global_state.triples) == 0:
+            self.global_state.triples = result
+        else:
+            self.global_state.triples += result
         # pass results to next component
         self.global_state.caller = self
         self.push([t.as_text for t in result])
