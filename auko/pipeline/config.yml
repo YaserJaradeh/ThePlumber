@@ -1,0 +1,4 @@
+pipeline:
+  name: test
+  components:
+    extractor: pos_extractor
