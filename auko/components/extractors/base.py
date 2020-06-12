@@ -1,10 +1,10 @@
 from typing import List
-from auko.components import StanfordClient
-from auko.components import OLLIEClient
+from auko.components import StanfordClient, OLLIEClient
+from auko.discovery import AuKoClass
 from auko.components.format import Triple
 
 
-class BaseExtractor:
+class BaseExtractor(AuKoClass):
 
     def __init__(self, name: str = 'Base Extractor'):
         self.name = name

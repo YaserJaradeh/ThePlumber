@@ -1,7 +1,8 @@
 from typing import AnyStr
+from auko.discovery import AuKoClass
 
 
-class BaseReader:
+class BaseReader(AuKoClass):
 
     def __init__(self, name='Base reader'):
         self.name = name

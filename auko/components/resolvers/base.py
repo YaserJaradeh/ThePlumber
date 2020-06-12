@@ -1,9 +1,10 @@
 from typing import List
 from auko.components import StanfordClient
 from auko.components.format import Chain
+from auko.discovery import AuKoClass
 
 
-class BaseResolver:
+class BaseResolver(AuKoClass):
 
     def __init__(self, name: str = 'Base Resolver'):
         self.name = name

@@ -1,7 +1,8 @@
 from typing import List, Tuple
+from auko.discovery import AuKoClass
 
 
-class BaseEntityLinker:
+class BaseEntityLinker(AuKoClass):
     """
     Base entity linking class, other entity linkers will inherit this one
     """
@@ -12,7 +13,7 @@ class BaseEntityLinker:
         pass
 
 
-class BaseRelationLinker:
+class BaseRelationLinker(AuKoClass):
     """
     Base relation linking class, other relation linkers will inherit this one
     """
@@ -23,7 +24,7 @@ class BaseRelationLinker:
         pass
 
 
-class BaseJointLinker:
+class BaseJointLinker(AuKoClass):
     """
     Base joint linking class, other joint linkers will inherit this one
     """
