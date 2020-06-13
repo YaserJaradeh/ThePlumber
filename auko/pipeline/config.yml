@@ -1,4 +1,8 @@
 pipeline:
   name: test
   components:
-    extractor: pos_extractor
+    extractor: pos
+    linker: dummy
+    resolver: dummy
+    reader: standard
+    writer: standard
