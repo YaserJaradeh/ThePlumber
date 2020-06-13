@@ -13,6 +13,18 @@ class BaseExtractor(AuKoClass):
         pass
 
 
+class DummyExtractor(BaseExtractor):
+    """
+    Dummy extractor used for testing purposes or to fill space in the pipeline
+    """
+
+    def __init__(self):
+        super().__init__(name='dummy extractor')
+
+    def get_triples(self, text) -> List[Triple]:
+        return []
+
+
 class StanfordBasedExtractor(BaseExtractor):
 
     def __init__(self, client: StanfordClient, key: str = None, name: str = 'Stanford-based Extractor'):

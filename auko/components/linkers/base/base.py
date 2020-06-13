@@ -33,3 +33,21 @@ class BaseJointLinker(AuKoClass):
 
     def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
         pass
+
+
+class DummyLinker(AuKoClass):
+    """
+    Dummy Linker used for testing purposes or to fill space in the pipeline
+    """
+
+    def __init__(self, name: str = 'Dummy Linker'):
+        self.name = name
+
+    def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
+        return []
+
+    def get_relations(self, text: str) -> List[Tuple[str, str]]:
+        return []
+
+    def get_entities(self, text: str) -> List[Tuple[str, str]]:
+        return []

@@ -1,5 +1,5 @@
 # ======= Base linkers =======
-from .base import BaseRelationLinker, BaseJointLinker, BaseEntityLinker, BaseWebLinker
+from .base import BaseRelationLinker, BaseJointLinker, BaseEntityLinker, BaseWebLinker, DummyLinker
 # ======= Entity linkers =======
 from .entity import FalconEntityLinkerWikidata, FalconEntityLinkerDBpedia
 from .entity import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker

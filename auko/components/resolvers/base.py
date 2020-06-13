@@ -13,6 +13,18 @@ class BaseResolver(AuKoClass):
         pass
 
 
+class DummyResolver(AuKoClass):
+    """
+    Dummy resolver used for testing purposes or to fill space in the pipeline
+    """
+
+    def __init__(self, name: str = 'Dummy Resolver'):
+        self.name = name
+
+    def get_coreference_chains(self, text: str) -> List[Chain]:
+        return []
+
+
 class StanfordBasedResolver(BaseResolver):
 
     def __init__(self, client: StanfordClient, name: str = 'Stanford-based Resolver'):
