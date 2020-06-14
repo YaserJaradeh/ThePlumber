@@ -9,8 +9,8 @@ from .resolvers import BaseResolver, StanfordBasedResolver, DummyResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
 # ===== Linkers =====
 from .linkers import BaseEntityLinker, BaseRelationLinker, BaseJointLinker, DummyLinker
-from .linkers import FalconJointLinker, FalconJoinLinkerDBpedia, FalconJoinLinkerWikidata
-from .linkers import FalconEntityLinkerWikidata, FalconEntityLinkerDBpedia
+from .linkers import FalconJointLinker, FalconDBpediaJoinLinker, FalconWikidataJoinLinker
+from .linkers import FalconWikidataEntityLinker, FalconDBpediaEntityLinker
 from .linkers import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker
 from .linkers import EARLJointLinker
 # ===== Readers =====

@@ -1,2 +1,2 @@
-from .falcon import FalconJointLinker, FalconJoinLinkerDBpedia, FalconJoinLinkerWikidata
+from .falcon import FalconJointLinker, FalconDBpediaJoinLinker, FalconWikidataJoinLinker
 from .earl import EARLJointLinker
