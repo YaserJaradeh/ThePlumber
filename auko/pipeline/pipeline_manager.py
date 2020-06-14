@@ -4,7 +4,7 @@ from os.path import exists
 from auko.components import *
 from auko.user import *
 from auko.discovery import get_classes_map
-from typing import Dict, AnyStr
+from typing import Dict, Union, List
 from yaml import load
 
 try:
@@ -55,13 +55,19 @@ class PipelineParser:
         return result
 
     @staticmethod
-    def __lookup_class_name(class_name: str, component_type: str):
+    def __lookup_class_name(class_name: Union[str, List], component_type: str):
         if component_type not in ALLOWED_KEYS:
             raise ValueError(f'component is not recognized, should be one of {ALLOWED_KEYS}, but got {component_type}')
-        full_class_name = class_name.replace('_', '').lower().strip() + component_type.lower().strip()
-        classes_map = PipelineParser.classes_map()
-        keys = [key.replace('_', '').lower().strip() for key in classes_map.keys()]
-        return classes_map[list(classes_map.keys())[keys.index(full_class_name)]]
+        if isinstance(class_name, str):
+            full_class_name = class_name.replace('_', '').lower().strip() + component_type.lower().strip()
+            classes_map = PipelineParser.classes_map()
+            keys = [key.replace('_', '').lower().strip() for key in classes_map.keys()]
+            return classes_map[list(classes_map.keys())[keys.index(full_class_name)]]
+        else:
+            results = []
+            for name in class_name:
+                results.append(PipelineParser.__lookup_class_name(name, component_type))
+            return results
 
 
     @staticmethod
