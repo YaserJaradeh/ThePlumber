@@ -25,13 +25,13 @@ class FalconJointLinker(BaseJointLinker, BaseWebLinker):
         return entities, relations
 
 
-class FalconJoinLinkerDBpedia(FalconJointLinker):
+class FalconDBpediaJoinLinker(FalconJointLinker):
 
     def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
         return super().get_entities_and_relations(text, kg='dbpedia')
 
 
-class FalconJoinLinkerWikidata(FalconJointLinker):
+class FalconWikidataJoinLinker(FalconJointLinker):
 
     def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
         return super().get_entities_and_relations(text)

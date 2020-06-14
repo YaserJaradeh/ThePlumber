@@ -3,7 +3,7 @@ from auko.components.linkers.base import BaseEntityLinker
 from typing import List, Tuple
 
 
-class FalconEntityLinkerDBpedia(BaseEntityLinker, FalconJointLinker):
+class FalconDBpediaEntityLinker(BaseEntityLinker, FalconJointLinker):
 
     def __init__(self):
         super().__init__(name="Falcon Entity linker mode on DBpedia")
@@ -13,7 +13,7 @@ class FalconEntityLinkerDBpedia(BaseEntityLinker, FalconJointLinker):
         return super().get_entities_and_relations(text, kg='dbpedia', mode="short")[0]
 
 
-class FalconEntityLinkerWikidata(BaseEntityLinker, FalconJointLinker):
+class FalconWikidataEntityLinker(BaseEntityLinker, FalconJointLinker):
 
     def __init__(self):
         super().__init__(name="Falcon Entity linker mode on Wikidata")
