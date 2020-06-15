@@ -6,6 +6,7 @@ from auko.user import *
 from auko.discovery import get_classes_map
 from typing import Dict, Union, List
 from yaml import load
+from auko.nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode, ExtractionNode, Lin
 
 try:
     from yaml import CLoader as Loader
@@ -30,8 +31,7 @@ class PipelineParser:
             document = load(in_file, Loader=Loader)
             if not PipelineParser.__check_structure(document):
                 raise IOError('Configuration file is not in the correct format!')
-            for component_type, component_name in PipelineParser.__get_components(document).items():
-                print(PipelineParser.__lookup_class_name(component_name, component_type))
+            return PipelineParser.__build_pipeline(PipelineParser.__get_components(document))
 
     @staticmethod
     def __check_structure(document: Dict) -> bool:
@@ -69,11 +69,61 @@ class PipelineParser:
                 results.append(PipelineParser.__lookup_class_name(name, component_type))
             return results
 
-
     @staticmethod
     def __build_pipeline(components: Dict) -> Pipeline:
-        pass
+        stan = StanfordClient()
+        kwargs = {'stanford_client': stan}
+        reader_node = ReadingNode('reader', PipelineParser.__lookup_class_name(components['reader'], 'reader')())
+        main_node = ProcessingNode('CPU')
+        pipe = Pipeline(reader_node, global_state=GlobalState(triples=[], caller=None))
+        ####################################
+        resolvers = components['resolver']
+        if isinstance(resolvers, list):
+            collector_node = AggregationNode('resolvers collector')
+            collector_node.add_downstream(main_node)
+            types = PipelineParser.__lookup_class_name(components['resolver'], 'resolver')
+            for resolver_type in types:
+                resolver_node = ResolutionNode('resolver', resolver_type())
+                reader_node.add_downstream(resolver_node)
+                resolver_node.add_downstream(collector_node)
+        else:
+            resolver_node = ResolutionNode('resolver',
+                                           PipelineParser.__lookup_class_name(components['resolver'], 'resolver')())
+            reader_node.add_downstream(resolver_node)
+            resolver_node.add_downstream(main_node)
+        ####################################
+        extractors = components['extractor']
+        if isinstance(extractors, list):
+            collector_node = AggregationNode('extractors collector')
+            collector_node.add_downstream(main_node)
+            types = PipelineParser.__lookup_class_name(components['extractor'], 'extractor')
+            for extractor_type in types:
+                extractor_node = ExtractionNode('extractor', extractor_type(**kwargs))
+                reader_node.add_downstream(extractor_node)
+                extractor_node.add_downstream(collector_node)
+        else:
+            extractor_node = ExtractionNode('extractor',
+                                            PipelineParser.__lookup_class_name(components['extractor'], 'extractor')(**kwargs))
+            reader_node.add_downstream(extractor_node)
+        ####################################
+        linkers = components['linker']
+        if isinstance(linkers, list):
+            collector_node = AggregationNode('extractors collector')
+            collector_node.add_downstream(main_node)
+            types = PipelineParser.__lookup_class_name(components['extractor'], 'extractor')
+            for extractor_type in types:
+                extractor_node = ExtractionNode('extractor', extractor_type(**kwargs))
+                reader_node.add_downstream(extractor_node)
+                extractor_node.add_downstream(collector_node)
+        else:
+            extractor_node = ExtractionNode('extractor',
+                                            PipelineParser.__lookup_class_name(components['extractor'], 'extractor')(
+                                                **kwargs))
+            reader_node.add_downstream(extractor_node)
+        ####################################
+        return pipe
 
 
 if __name__ == '__main__':
     x = PipelineParser.parse('config.yml')
+    x.plot()
