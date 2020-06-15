@@ -1,5 +1,4 @@
 from typing import List
-from auko.components.clients.stanford import StanfordClient
 from auko.components.extractors.base import StanfordBasedExtractor
 from auko.components.format import Triple
 from xml.dom.minidom import parseString
@@ -9,8 +8,8 @@ import nltk
 # Adapted from https://github.com/anutammewar/extract_triplets/blob/1de00fe5f15be81bf8d8d02a32a9b00c4ec84882/extract.py
 class DependencyExtractor(StanfordBasedExtractor):
 
-    def __init__(self, stanford_client: StanfordClient):
-        super().__init__(name='Dependency-based Extractor', client=stanford_client)
+    def __init__(self, **kwargs):
+        super().__init__(name='Dependency-based Extractor', **kwargs)
         self.id_map = {}  # key=id, value=word
         self.tree_up = {}  # key = child id, value = parent id
         self.tree_down = {}  # kay = parent id, value = list of children ids

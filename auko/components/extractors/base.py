@@ -27,10 +27,12 @@ class DummyExtractor(BaseExtractor):
 
 class StanfordBasedExtractor(BaseExtractor):
 
-    def __init__(self, client: StanfordClient, key: str = None, name: str = 'Stanford-based Extractor'):
+    def __init__(self, name: str = 'Stanford-based Extractor', **kwargs):
         super().__init__(name)
-        self.client = client
-        self.json_key = key
+        if 'stanford_client' not in kwargs:
+            raise ValueError('stanford_client parameter should be passed to any Stanford based component')
+        self.client = kwargs['stanford_client']
+        self.json_key = kwargs['key'] if 'key' in kwargs else None
 
     def get_triples(self, text: str) -> List[Triple]:
         pass
@@ -69,9 +71,11 @@ class StanfordBasedExtractor(BaseExtractor):
 
 class OllieBasedExtractor(BaseExtractor):
 
-    def __init__(self, client: OLLIEClient, name: str = 'Ollie-based Extractor'):
+    def __init__(self, name: str = 'Ollie-based Extractor', **kwargs):
         super().__init__(name)
-        self.client = client
+        if 'ollie_client' not in kwargs:
+            raise ValueError('ollie_client parameter should be passed to any Ollie based component')
+        self.client = kwargs['ollie_client']
 
     def get_triples(self, text: str):
         pass

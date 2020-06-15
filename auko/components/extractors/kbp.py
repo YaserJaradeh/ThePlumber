@@ -6,8 +6,9 @@ from auko.components.format import Triple
 
 class KBPExtractor(StanfordBasedExtractor):
 
-    def __init__(self, stanford_client: StanfordClient):
-        super().__init__(name='KBP extractor', key='kbp', client=stanford_client)
+    def __init__(self, **kwargs):
+        kwargs['key'] = 'kbp'
+        super().__init__(name='KBP extractor', **kwargs)
 
     def get_triples(self, text) -> List[Triple]:
         response = self.client.kbp(text, simple_format=False)

@@ -225,8 +225,8 @@ class RdfTriple:
 
 class POSExtractor(StanfordBasedExtractor):
 
-    def __init__(self, stanford_client: StanfordClient):
-        super().__init__(name='POS-based extractor', client=stanford_client)
+    def __init__(self, **kwargs):
+        super().__init__(name='POS-based extractor', **kwargs)
 
     def get_triples(self, text) -> List[Triple]:
         sentences = nltk.sent_tokenize(text)

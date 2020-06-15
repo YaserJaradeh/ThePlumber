@@ -7,8 +7,8 @@ import nltk
 
 class OllieExtractor(OllieBasedExtractor):
 
-    def __init__(self, ollie_client: OLLIEClient, confidence=0.6):
-        super().__init__(name='OLLIE extractor', client=ollie_client)
+    def __init__(self, confidence=0.6, **kwargs):
+        super().__init__(name='OLLIE extractor', **kwargs)
         self.confidence = confidence
 
     def get_triples(self, text) -> List[Triple]:
