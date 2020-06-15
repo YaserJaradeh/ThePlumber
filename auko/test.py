@@ -6,7 +6,8 @@ from auko.components import EARLJointLinker
 
 def test_extractors(text: str):
     with StanfordClient() as client:
-        extractor = DependencyExtractor(client)
+        kwargs = {'stanford_client': client}
+        extractor = DependencyExtractor(**kwargs)
         print(extractor.name)
         print('^' * 30)
         triples = extractor.get_triples(text)
@@ -14,7 +15,7 @@ def test_extractors(text: str):
             print('|-', triple)
         ################################
         print('=' * 40)
-        extractor = OpenIEExtractor(client)
+        extractor = OpenIEExtractor(**kwargs)
         print(extractor.name)
         print('^' * 30)
         triples = extractor.get_triples(text)
@@ -22,7 +23,7 @@ def test_extractors(text: str):
             print('|-', triple)
         ################################
         print('=' * 40)
-        extractor = KBPExtractor(client)
+        extractor = KBPExtractor(**kwargs)
         print(extractor.name)
         print('^' * 30)
         triples = extractor.get_triples(text)
@@ -30,7 +31,7 @@ def test_extractors(text: str):
             print('|-', triple)
         ################################
         print('=' * 40)
-        extractor = POSExtractor(client)
+        extractor = POSExtractor(**kwargs)
         print(extractor.name)
         print('^' * 30)
         triples = extractor.get_triples(text)
@@ -38,8 +39,9 @@ def test_extractors(text: str):
            print('|-', triple)
         ################################
     with OLLIEClient() as client:
+        kwargs = {'ollie_client': client}
         print('=' * 40)
-        extractor = OllieExtractor(client)
+        extractor = OllieExtractor(**kwargs)
         print(extractor.name)
         print('^' * 30)
         triples = extractor.get_triples(text)
@@ -70,6 +72,6 @@ if __name__ == '__main__':
     test = "Barack Obama was born in Hawaii. He was elected president in 2008."
     test_extractors(test)
     # test_coref_resolvers(test)
-    linker = EARLJointLinker()
-    x = linker.get_entities_and_relations("Who is the wife of Barack Obama ?")
+    #linker = EARLJointLinker()
+    #x = linker.get_entities_and_relations("Who is the wife of Barack Obama ?")
 
