@@ -5,9 +5,9 @@ from typing import List, Tuple
 
 class FalconDBpediaEntityLinker(BaseEntityLinker, FalconJointLinker):
 
-    def __init__(self):
-        super().__init__(name="Falcon Entity linker mode on DBpedia")
-        FalconJointLinker.__init__(self)
+    def __init__(self, **kwargs):
+        super().__init__(name="Falcon Entity linker mode on DBpedia", **kwargs)
+        FalconJointLinker.__init__(self, **kwargs)
 
     def get_entities(self, text: str) -> List[Tuple[str, str]]:
         return super().get_entities_and_relations(text, kg='dbpedia', mode="short")[0]
@@ -15,8 +15,8 @@ class FalconDBpediaEntityLinker(BaseEntityLinker, FalconJointLinker):
 
 class FalconWikidataEntityLinker(BaseEntityLinker, FalconJointLinker):
 
-    def __init__(self):
-        super().__init__(name="Falcon Entity linker mode on Wikidata")
+    def __init__(self, **kwargs):
+        super().__init__(name="Falcon Entity linker mode on Wikidata", **kwargs)
 
     def get_entities(self, text: str) -> List[Tuple[str, str]]:
         return super().get_entities_and_relations(text, mode="short")[0]

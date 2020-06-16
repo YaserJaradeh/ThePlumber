@@ -6,10 +6,10 @@ from typing import List, Tuple
 # TODO: Use Top-K because it is supported
 class FalconJointLinker(BaseJointLinker, BaseWebLinker):
 
-    def __init__(self):
-        # TODO: replace with super call
-        BaseJointLinker.__init__(self, name="Falcon Relation and Entity Linker")
-        BaseWebLinker.__init__(self, api_url="https://labs.tib.eu/falcon/falcon2/api")
+    def __init__(self, **kwargs):
+        kwargs['api_url'] = 'https://labs.tib.eu/falcon/falcon2/api'
+        BaseJointLinker.__init__(self, name="Falcon Relation and Entity Linker", **kwargs)
+        BaseWebLinker.__init__(self, **kwargs)
 
     def get_entities_and_relations(self, text: str, kg='wikidata', mode='long') -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
         db = kg.lower().strip() if kg.lower().strip() in ['wikidata', 'dbpedia'] else 'wikidata'
