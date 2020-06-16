@@ -100,7 +100,7 @@ class LinkingNode(Node):
 
     def process(self, item: List[AnyStr]):
         # item here is the text (str)
-        # Get relations from linker
+        # Get all links from linker
         for triple in item:
             self.results.append(self.linker.get_links(triple))
 
