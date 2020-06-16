@@ -7,8 +7,8 @@ from typing import List
 
 class SpacyNeuralCoreferenceResolver(BaseResolver):
 
-    def __init__(self):
-        super().__init__(name='Spacy Neural Coreference Resolver')
+    def __init__(self, **kwargs):
+        super().__init__(name='Spacy Neural Coreference Resolver', **kwargs)
         self.nlp = spacy.load('en')  # TODO: expose this in configuration so it can be changed
         neuralcoref.add_to_pipe(self.nlp)
 

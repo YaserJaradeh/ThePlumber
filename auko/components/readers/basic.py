@@ -5,8 +5,8 @@ from typing import AnyStr
 
 class StandardReader(BaseReader):
 
-    def __init__(self):
-        super().__init__(name='Reader from standard input (console)')
+    def __init__(self, **kwargs):
+        super().__init__(name='Reader from standard input (console)', **kwargs)
 
     def read(self, **kwargs) -> AnyStr:
         return input('Please enter the input text')
@@ -14,8 +14,8 @@ class StandardReader(BaseReader):
 
 class RawFileReader(BaseReader):
 
-    def __init__(self):
-        super().__init__(name='Reader from a file')
+    def __init__(self, **kwargs):
+        super().__init__(name='Reader from a file', **kwargs)
 
     def read(self, file_path, **kwargs) -> AnyStr:
         if not exists(file_path):

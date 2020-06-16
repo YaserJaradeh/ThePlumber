@@ -1,13 +1,12 @@
 from typing import List
-from auko.components.clients.stanford import StanfordClient
 from auko.components.resolvers.base import StanfordBasedResolver
 from auko.components.format import Chain
 
 
 class StanfordCoreferenceResolver(StanfordBasedResolver):
 
-    def __init__(self, stanford_client: StanfordClient):
-        super().__init__(name='Stanford Coreference Resolver', client=stanford_client)
+    def __init__(self, **kwargs):
+        super().__init__(name='Stanford Coreference Resolver', **kwargs)
 
     def get_coreference_chains(self, text) -> List[Chain]:
         response = self.client.coref(text, simple_format=False)

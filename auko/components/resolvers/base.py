@@ -6,7 +6,7 @@ from auko.discovery import AuKoClass
 
 class BaseResolver(AuKoClass):
 
-    def __init__(self, name: str = 'Base Resolver'):
+    def __init__(self, name: str = 'Base Resolver', **kwargs):
         self.name = name
 
     def get_coreference_chains(self, text: str) -> List[Chain]:
@@ -18,7 +18,7 @@ class DummyResolver(AuKoClass):
     Dummy resolver used for testing purposes or to fill space in the pipeline
     """
 
-    def __init__(self, name: str = 'Dummy Resolver'):
+    def __init__(self, name: str = 'Dummy Resolver', **kwargs):
         self.name = name
 
     def get_coreference_chains(self, text: str) -> List[Chain]:
@@ -27,9 +27,11 @@ class DummyResolver(AuKoClass):
 
 class StanfordBasedResolver(BaseResolver):
 
-    def __init__(self, client: StanfordClient, name: str = 'Stanford-based Resolver'):
+    def __init__(self, name: str = 'Stanford-based Resolver', **kwargs):
         super().__init__(name)
-        self.client = client
+        if 'stanford_client' not in kwargs:
+            raise ValueError('stanford_client parameter should be passed to any Stanford based resolvers')
+        self.client = kwargs['stanford_client']
 
     def get_coreference_chains(self, text: str) -> List[Chain]:
         pass
