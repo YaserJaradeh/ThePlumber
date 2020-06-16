@@ -1,12 +1,13 @@
 from functools import lru_cache
-from consecution import Node, Pipeline, GlobalState
+from consecution import Pipeline, GlobalState
 from os.path import exists
 from auko.components import *
 from auko.user import *
 from auko.discovery import get_classes_map
 from typing import Dict, Union, List
 from yaml import load
-from auko.nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode, ExtractionNode, Lin
+from auko.nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode, ExtractionNode, LinkingNode, \
+    WritingNode
 
 try:
     from yaml import CLoader as Loader
@@ -71,57 +72,79 @@ class PipelineParser:
 
     @staticmethod
     def __build_pipeline(components: Dict) -> Pipeline:
+        names_repo = {}
         stan = StanfordClient()
-        kwargs = {'stanford_client': stan}
-        reader_node = ReadingNode('reader', PipelineParser.__lookup_class_name(components['reader'], 'reader')())
-        main_node = ProcessingNode('CPU')
+        ollie = OLLIEClient()
+        kwargs = {'stanford_client': stan, 'ollie_client': ollie}
+        reader_node = ReadingNode(PipelineParser.__get_name(names_repo, 'reader'),
+                                  PipelineParser.__lookup_class_name(components['reader'], 'reader')(**kwargs))
+        main_node = ProcessingNode(PipelineParser.__get_name(names_repo, 'CPU'))
         pipe = Pipeline(reader_node, global_state=GlobalState(triples=[], caller=None))
         ####################################
         resolvers = components['resolver']
         if isinstance(resolvers, list):
-            collector_node = AggregationNode('resolvers collector')
+            collector_node = AggregationNode(PipelineParser.__get_name(names_repo, 'resolvers collector'))
             collector_node.add_downstream(main_node)
             types = PipelineParser.__lookup_class_name(components['resolver'], 'resolver')
             for resolver_type in types:
-                resolver_node = ResolutionNode('resolver', resolver_type())
+                resolver_node = ResolutionNode(PipelineParser.__get_name(names_repo, 'resolver'), resolver_type(**kwargs))
                 reader_node.add_downstream(resolver_node)
                 resolver_node.add_downstream(collector_node)
         else:
-            resolver_node = ResolutionNode('resolver',
-                                           PipelineParser.__lookup_class_name(components['resolver'], 'resolver')())
+            resolver_node = ResolutionNode(PipelineParser.__get_name(names_repo, 'resolver'),
+                                           PipelineParser.__lookup_class_name(components['resolver'], 'resolver')(**kwargs))
             reader_node.add_downstream(resolver_node)
             resolver_node.add_downstream(main_node)
         ####################################
         extractors = components['extractor']
+        last_extractor = None
         if isinstance(extractors, list):
-            collector_node = AggregationNode('extractors collector')
-            collector_node.add_downstream(main_node)
+            collector_node = AggregationNode(PipelineParser.__get_name(names_repo, 'extractors collector'))
             types = PipelineParser.__lookup_class_name(components['extractor'], 'extractor')
             for extractor_type in types:
-                extractor_node = ExtractionNode('extractor', extractor_type(**kwargs))
+                extractor_node = ExtractionNode(PipelineParser.__get_name(names_repo, 'extractor'),
+                                                extractor_type(**kwargs))
                 reader_node.add_downstream(extractor_node)
                 extractor_node.add_downstream(collector_node)
+            last_extractor = collector_node
         else:
-            extractor_node = ExtractionNode('extractor',
-                                            PipelineParser.__lookup_class_name(components['extractor'], 'extractor')(**kwargs))
-            reader_node.add_downstream(extractor_node)
-        ####################################
-        linkers = components['linker']
-        if isinstance(linkers, list):
-            collector_node = AggregationNode('extractors collector')
-            collector_node.add_downstream(main_node)
-            types = PipelineParser.__lookup_class_name(components['extractor'], 'extractor')
-            for extractor_type in types:
-                extractor_node = ExtractionNode('extractor', extractor_type(**kwargs))
-                reader_node.add_downstream(extractor_node)
-                extractor_node.add_downstream(collector_node)
-        else:
-            extractor_node = ExtractionNode('extractor',
+            extractor_node = ExtractionNode(PipelineParser.__get_name(names_repo, 'extractor'),
                                             PipelineParser.__lookup_class_name(components['extractor'], 'extractor')(
                                                 **kwargs))
             reader_node.add_downstream(extractor_node)
+            last_extractor = extractor_node
         ####################################
+        linkers = components['linker']
+        last_linker = None
+        if isinstance(linkers, list):
+            collector_node = AggregationNode(PipelineParser.__get_name(names_repo, 'linkers collector'))
+            types = PipelineParser.__lookup_class_name(components['linker'], 'linker')
+            for linker_type in types:
+                linker_node = LinkingNode(PipelineParser.__get_name(names_repo, 'linker'), linker_type(**kwargs))
+                last_extractor.add_downstream(linker_node)
+                linker_node.add_downstream(collector_node)
+            last_linker = collector_node
+        else:
+            linker_node = LinkingNode(PipelineParser.__get_name(names_repo, 'linker'),
+                                      PipelineParser.__lookup_class_name(components['linker'], 'linker')(**kwargs))
+            last_extractor.add_downstream(linker_node)
+            last_linker = linker_node
+        last_linker.add_downstream(main_node)
+        ####################################
+        writer = WritingNode(PipelineParser.__get_name(names_repo, 'writer'),
+                             PipelineParser.__lookup_class_name(components['writer'], 'writer')(**kwargs))
+        main_node.add_downstream(writer)
         return pipe
+
+    @staticmethod
+    def __get_name(repo: Dict, node_type: str):
+        if node_type in repo:
+            counter = repo[node_type] + 1
+            repo[node_type] = counter
+            return f'{node_type} {counter}'
+        else:
+            repo[node_type] = 1
+            return f'{node_type} 1'
 
 
 if __name__ == '__main__':
