@@ -1,17 +1,17 @@
-from auko.components.linkers.base import BaseJointLinker, BaseWebLinker
+from auko.components.linkers.base import BaseLinker, BaseWebLinker
 from typing import List, Tuple
 
 
 # Implementing API detailed in https://labs.tib.eu/falcon/falcon2/api-use
 # TODO: Use Top-K because it is supported
-class FalconJointLinker(BaseJointLinker, BaseWebLinker):
+class FalconJointLinker(BaseLinker, BaseWebLinker):
 
     def __init__(self, **kwargs):
         kwargs['api_url'] = 'https://labs.tib.eu/falcon/falcon2/api'
-        BaseJointLinker.__init__(self, name="Falcon Relation and Entity Linker", **kwargs)
+        BaseLinker.__init__(self, name="Falcon Relation and Entity Linker", **kwargs)
         BaseWebLinker.__init__(self, **kwargs)
 
-    def get_entities_and_relations(self, text: str, kg='wikidata', mode='long') -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
+    def get_links(self, text: str, kg='wikidata', mode='long') -> List[Tuple[str, str, str]]:
         db = kg.lower().strip() if kg.lower().strip() in ['wikidata', 'dbpedia'] else 'wikidata'
         mode = mode.lower().strip() if mode.lower().strip() in ['long', 'short'] else 'long'
         params = {"mode": mode}
@@ -20,18 +20,18 @@ class FalconJointLinker(BaseJointLinker, BaseWebLinker):
         result = self.client.POST(json={"text": text}, params=params).json()
         ent_key = f'entities_{kg}'
         rel_key = f'relations_{kg}'
-        entities = [(entity[0], entity[1]) for entity in result[ent_key]] if ent_key in result else []
-        relations = [(relation[0], relation[1]) for relation in result[rel_key]] if rel_key in result else []
-        return entities, relations
+        entities = [(entity[0][1:-1], entity[1], 'entity') for entity in result[ent_key]] if ent_key in result else []
+        relations = [(relation[0][1:-1], relation[1], 'relation') for relation in result[rel_key]] if rel_key in result else []
+        return entities + relations
 
 
-class FalconDBpediaJoinLinker(FalconJointLinker):
+class FalconDBpediaJointLinker(FalconJointLinker):
 
-    def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
-        return super().get_entities_and_relations(text, kg='dbpedia')
+    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+        return super().get_links(text, kg='dbpedia')
 
 
-class FalconWikidataJoinLinker(FalconJointLinker):
+class FalconWikidataJointLinker(FalconJointLinker):
 
-    def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
-        return super().get_entities_and_relations(text)
+    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+        return super().get_links(text)

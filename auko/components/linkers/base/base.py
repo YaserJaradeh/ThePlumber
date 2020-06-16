@@ -2,52 +2,31 @@ from typing import List, Tuple
 from auko.discovery import AuKoClass
 
 
-class BaseEntityLinker(AuKoClass):
+class BaseLinker(AuKoClass):
     """
-    Base entity linking class, other entity linkers will inherit this one
+    Base linker class, all other linkers will inherit from this
+    entity, relation, or joint linkers will use this class
     """
-    def __init__(self, name: str = 'Base Entity Linker', **kwargs):
+
+    def __init__(self, name: str = 'Base Linker', **kwargs):
         self.name = name
 
-    def get_entities(self, text: str) -> List[Tuple[str, str]]:
+    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+        """
+        gets the links in the text
+        :param text: the text to search in
+        :return: a list of tuples, each tuple contains the <URL, surface form, and type (entity, relation)>
+        """
         pass
 
 
-class BaseRelationLinker(AuKoClass):
-    """
-    Base relation linking class, other relation linkers will inherit this one
-    """
-    def __init__(self, name: str = 'Base Relation Linker', **kwargs):
-        self.name = name
-
-    def get_relations(self, text: str) -> List[Tuple[str, str]]:
-        pass
-
-
-class BaseJointLinker(AuKoClass):
-    """
-    Base joint linking class, other joint linkers will inherit this one
-    """
-    def __init__(self, name: str = 'Base Joint (relation and entity) Linker', **kwargs):
-        self.name = name
-
-    def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
-        pass
-
-
-class DummyLinker(AuKoClass):
+class DummyLinker(BaseLinker):
     """
     Dummy Linker used for testing purposes or to fill space in the pipeline
     """
 
-    def __init__(self, name: str = 'Dummy Linker', **kwargs):
-        self.name = name
+    def __init__(self, **kwargs):
+        super().__init__(name="Dummy Linker", **kwargs)
 
-    def get_entities_and_relations(self, text: str) -> Tuple[List[Tuple[str, str]], List[Tuple[str, str]]]:
-        return [], []
-
-    def get_relations(self, text: str) -> List[Tuple[str, str]]:
-        return []
-
-    def get_entities(self, text: str) -> List[Tuple[str, str]]:
+    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
         return []

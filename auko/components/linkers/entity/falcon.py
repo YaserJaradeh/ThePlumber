@@ -1,23 +1,21 @@
 from auko.components.linkers.joint.falcon import FalconJointLinker
-from auko.components.linkers.base import BaseEntityLinker
 from typing import List, Tuple
 
 
-class FalconDBpediaEntityLinker(BaseEntityLinker, FalconJointLinker):
+class FalconDBpediaEntityLinker(FalconJointLinker):
 
     def __init__(self, **kwargs):
         super().__init__(name="Falcon Entity linker mode on DBpedia", **kwargs)
-        FalconJointLinker.__init__(self, **kwargs)
 
-    def get_entities(self, text: str) -> List[Tuple[str, str]]:
-        return super().get_entities_and_relations(text, kg='dbpedia', mode="short")[0]
+    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+        return super().get_links(text, kg='dbpedia', mode="short")
 
 
-class FalconWikidataEntityLinker(BaseEntityLinker, FalconJointLinker):
+class FalconWikidataEntityLinker(FalconJointLinker):
 
     def __init__(self, **kwargs):
         super().__init__(name="Falcon Entity linker mode on Wikidata", **kwargs)
 
-    def get_entities(self, text: str) -> List[Tuple[str, str]]:
-        return super().get_entities_and_relations(text, mode="short")[0]
+    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+        return super().get_links(text, mode="short")
         # Why short mode returns <uri, number> while long mode returns <uri, string(label)>
