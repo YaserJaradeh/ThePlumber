@@ -1,6 +1,6 @@
 from consecution import Node
 from auko.components import BaseExtractor, BaseReader, BaseResolver, BaseWriter
-from auko.components import BaseRelationLinker, BaseEntityLinker, BaseJointLinker
+from auko.components import BaseLinker
 from auko.components import SPOTriple
 from typing import List, AnyStr
 import itertools
@@ -85,14 +85,14 @@ class ResolutionNode(Node):
         self.push(result)
 
 
-class RelationLinkingNode(Node):
+class LinkingNode(Node):
     """
-    A relation linking node, part of a pipeline
+    A generic linking node, part of a pipeline
     """
 
-    def __init__(self, name: AnyStr, rel_linker: BaseRelationLinker, **kwargs):
+    def __init__(self, name: AnyStr, linker: BaseLinker, **kwargs):
         super().__init__(name, **kwargs)
-        self.rel_linker = rel_linker
+        self.linker = linker
         self.results = []
 
     def begin(self):
@@ -102,63 +102,11 @@ class RelationLinkingNode(Node):
         # item here is the text (str)
         # Get relations from linker
         for triple in item:
-            self.results.append(self.rel_linker.get_relations(triple))
+            self.results.append(self.linker.get_links(triple))
 
     def end(self):
         self.global_state.caller = self
         self.push(list(itertools.chain(*self.results)))
-
-
-class EntityLinkingNode(Node):
-    """
-    An entity linking node, part of a pipeline
-    """
-
-    def __init__(self, name: AnyStr, ent_linker: BaseEntityLinker, **kwargs):
-        super().__init__(name, **kwargs)
-        self.ent_linker = ent_linker
-        self.results = []
-
-    def begin(self):
-        self.results = []
-
-    def process(self, item: List[AnyStr]):
-        # item here is the text (str)
-        # Get entities from linker
-        for triple in item:
-            self.results.append(self.ent_linker.get_entities(triple))
-
-    def end(self):
-        self.global_state.caller = self
-        self.push(list(itertools.chain(*self.results)))
-
-
-class JointLinkingNode(Node):
-    """
-    A joint linking (entities and relations) node, part of a pipeline
-    """
-
-    def __init__(self, name: AnyStr, linker: BaseJointLinker, **kwargs):
-        super().__init__(name, **kwargs)
-        self.linker = linker
-        self.entities = []
-        self.relations = []
-
-    def begin(self):
-        self.entities = []
-        self.relations = []
-
-    def process(self, item: List[AnyStr]):
-        # item here is the text (str)
-        # Get entities and relations from linker
-        for triple in item:
-            ents, rels = self.linker.get_entities_and_relations(triple)
-            self.entities.append(ents)
-            self.relations.append(rels)
-
-    def end(self):
-        self.global_state.caller = self
-        self.push((list(itertools.chain(*self.entities)), list(itertools.chain(*self.relations))))
 
 
 class WritingNode(Node):
@@ -188,21 +136,15 @@ class ProcessingNode(Node):
 
     def begin(self):
         self.triples = []
-        self.relations = []
-        self.entities = []
+        self.links = []
         self.chains = []
 
     def process(self, item):
         caller = self.global_state.caller
         if isinstance(caller, ResolutionNode):
             self.chains = item
-        if isinstance(caller, EntityLinkingNode):
-            self.entities = item
-        if isinstance(caller, RelationLinkingNode):
-            self.relations = item
-        if isinstance(caller, JointLinkingNode):
-            self.entities = item[0]
-            self.relations = item[1]
+        if isinstance(caller, LinkingNode):
+            self.links = item
 
     def end(self):
         self.triples = self.global_state.triples
@@ -212,4 +154,3 @@ class ProcessingNode(Node):
 
     def process_data(self) -> List[SPOTriple]:
         return [t.as_text for t in self.triples]
-
