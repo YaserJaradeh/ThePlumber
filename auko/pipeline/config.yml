@@ -5,5 +5,5 @@ pipeline:
     linker: [dummy, falcon_wikidata_joint]
     resolver: [dummy, stanford_coreference]
     reader: standard
-    writer: standard
+    writer: file
   input: 1

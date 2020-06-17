@@ -163,5 +163,6 @@ class PipelineParser:
 
 
 if __name__ == '__main__':
-    pipe, _ = PipelineParser.parse('config.yml')
-    pipe.plot()
+    #pipe, _ = PipelineParser.parse('config.yml')
+    #pipe.plot()
+    PipelineParser.parse_and_run('config.yml')
