@@ -1,8 +1,9 @@
 pipeline:
   name: test
   components:
-    extractor: [pos, openie]
+    extractor: pos
     linker: [dummy, falcon_wikidata_joint]
     resolver: [dummy, stanford_coreference]
     reader: standard
     writer: standard
+  input: 1
