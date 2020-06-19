@@ -6,6 +6,7 @@ class BaseReader(AuKoClass):
 
     def __init__(self, name='Base reader', **kwargs):
         self.name = name
+        self.kwargs = kwargs
 
-    def read(self, **kwargs) -> AnyStr:
+    def read(self) -> AnyStr:
         pass
