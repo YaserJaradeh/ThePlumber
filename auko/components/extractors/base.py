@@ -6,8 +6,9 @@ from auko.components.format import Triple
 
 class BaseExtractor(AuKoClass):
 
-    def __init__(self, name: str = 'Base Extractor'):
+    def __init__(self, name: str = 'Base Extractor', **kwargs):
         self.name = name
+        self.kwargs = kwargs
 
     def get_triples(self, text: str) -> List[Triple]:
         pass

@@ -10,6 +10,7 @@ class BaseLinker(AuKoClass):
 
     def __init__(self, name: str = 'Base Linker', **kwargs):
         self.name = name
+        self.kwargs = kwargs
 
     def get_links(self, text: str) -> List[Tuple[str, str, str]]:
         """
