@@ -21,33 +21,46 @@ class PipelineParser:
 
     @staticmethod
     @lru_cache(maxsize=128)
-    def classes_map():
+    def classes_map() -> Dict:
+        """
+        Lists available AuKo components in the AuKo package and user custom package
+        :return: a dictionary of the results (name -> type)
+        """
         return get_classes_map()
 
     @staticmethod
-    def parse(config_file) -> Tuple[Pipeline, Dict]:
+    def parse(config_file) -> Pipeline:
+        """
+        Parses the yml file into a fully working auko pipeline
+        :param config_file: the path of the yml config file
+        :return: pipeline object ready for run
+        """
         if not exists(config_file):
             raise ValueError(f"Please make sure that this file exists, got {config_file}")
         with open(config_file, 'r') as in_file:
             document = load(in_file, Loader=Loader)
             if not PipelineParser.__check_structure(document):
                 raise IOError('Configuration file is not in the correct format!')
-            return PipelineParser.__build_pipeline(PipelineParser.__get_components(document)), document
+            components = PipelineParser.__get_components(document)
+            params = PipelineParser.__get_parameters(document)
+            return PipelineParser.__build_pipeline(components, **params)
 
     @staticmethod
     def parse_and_run(config_file):
-        pipeline, document = PipelineParser.parse(config_file)
-        input_value = [1]
-        if 'input' in document['pipeline']:
-            user_input_value = document['pipeline']['input']
-            if isinstance(user_input_value, str):
-                input_value[0] = user_input_value
-            elif isinstance(user_input_value, list):
-                input_value = user_input_value
-        pipeline.consume(input_value)
+        """
+        Creates and runs the pipeline from the yml file with the given path
+        :param config_file: the path of the yml file
+        """
+        pipeline = PipelineParser.parse(config_file)
+        pipeline.consume([1])
 
     @staticmethod
     def __check_structure(document: Dict) -> bool:
+        """
+        Checks if the yml file is in the correct format to be parsed
+        :param document: the yml document
+        :return: True if the structure is ok, false otherwise
+        """
         if 'pipeline' not in document:
             return False
         if 'components' not in document['pipeline']:
@@ -61,6 +74,11 @@ class PipelineParser:
 
     @staticmethod
     def __get_components(document: Dict) -> Dict:
+        """
+        Extracts components from the yml file and create the suitable data structure
+        :param document: the yml document
+        :return: dictionary with component type and it's user specified class
+        """
         components = document['pipeline']['components']
         result = {'writer': 'standard', 'reader': 'standard'}
         for key, value in components.items():
@@ -68,7 +86,23 @@ class PipelineParser:
         return result
 
     @staticmethod
-    def __lookup_class_name(class_name: Union[str, List], component_type: str):
+    def __get_parameters(document: Dict) -> Dict:
+        """
+        Get the parameters passed by in the yml file
+        :param document: the document of the yml file
+        :return: returns a dictionary (key, value) of variable name and value
+        """
+        return document['pipeline']['parameters']
+
+    @staticmethod
+    def __lookup_class_name(class_name: Union[str, List], component_type: str) -> Union[
+        List[Tuple[type, str]], Tuple[type, str]]:
+        """
+        Looks up the class name in components dictionary
+        :param class_name: the class name (str) or a list of class names (strings)
+        :param component_type: the component type to filter lookup
+        :return: either a tuple of the type and it's name or a list of the same type
+        """
         if component_type not in ALLOWED_KEYS:
             raise ValueError(f'component is not recognized, should be one of {ALLOWED_KEYS}, but got {component_type}')
         if isinstance(class_name, str):
@@ -83,11 +117,26 @@ class PipelineParser:
             return results
 
     @staticmethod
-    def __build_pipeline(components: Dict) -> Pipeline:
+    def __build_pipeline(components: Dict, **kwargs) -> Pipeline:
+        """
+        Builds the pipeline from the list of components
+        appends all suitable nodes in the default order
+        the pipeline will be of the shape
+        |-- reader
+        |-- extractor(s)
+        |---- Linker(s)
+        |-- resolver(s)
+        |-- processor
+        |-- writer
+        :param components: a dictionary of components
+        :param kwargs: arguments used throughout the pipeline's life span
+        :return: Returns the pipeline object
+        """
         names_repo = {}
         stan = StanfordClient()
         ollie = OLLIEClient()
-        kwargs = {'stanford_client': stan, 'ollie_client': ollie}
+        kwargs['stanford_client'] = stan
+        kwargs['ollie_client'] = ollie
         reader_node = ReadingNode(PipelineParser.__get_name(names_repo, 'reader', components['reader']),
                                   PipelineParser.__lookup_class_name(components['reader'], 'reader')[0](**kwargs))
         main_node = ProcessingNode(PipelineParser.__get_name(names_repo, 'Processor'))
@@ -153,6 +202,13 @@ class PipelineParser:
 
     @staticmethod
     def __get_name(repo: Dict, node_type: str, postfix: str = None):
+        """
+        Create a unique name for a node in the pipeline
+        :param repo: the repo where the numbers are appended from
+        :param node_type: the type of the node used to create the name
+        :param postfix: a postfix (optional) can be used to add more info to the name of the node
+        :return: returns a string which is the name of the node
+        """
         if node_type in repo:
             counter = repo[node_type] + 1
             repo[node_type] = counter
@@ -163,6 +219,6 @@ class PipelineParser:
 
 
 if __name__ == '__main__':
-    #pipe, _ = PipelineParser.parse('config.yml')
+    #pipe = PipelineParser.parse('config.yml')
     #pipe.plot()
     PipelineParser.parse_and_run('config.yml')

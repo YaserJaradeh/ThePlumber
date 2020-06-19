@@ -6,4 +6,6 @@ pipeline:
     resolver: [dummy, stanford_coreference]
     reader: standard
     writer: file
-  input: 1
+  parameters:
+    input_file: ''
+    output_file: './test.txt'
