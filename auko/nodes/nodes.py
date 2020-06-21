@@ -23,7 +23,7 @@ class AggregationNode(Node):
         self.results = self.results + item
 
     def end(self):
-        self.global_state.caller = self
+        # self.global_state.caller = self  # Remove so last caller is still valid and processing node can guess which
         self.push(self.results)
 
 
@@ -39,7 +39,7 @@ class ReadingNode(Node):
     def process(self, item):
         # Get text from source, item here is most likely path or uri for some Web-based reader
         # read data into result
-        result = self.reader.read(path=item)
+        result = self.reader.read()
         # pass result to next component
         self.global_state.caller = self
         self.push(result)
@@ -117,12 +117,12 @@ class WritingNode(Node):
     def __init__(self, name: AnyStr, writer: BaseWriter, **kwargs):
         super().__init__(name, **kwargs)
         self.writer = writer
-        self.kwargs = kwargs
+        # self.kwargs = kwargs
 
     def process(self, item: List[SPOTriple]):
         # item here is the list of final triples
         # Get final triples
-        result = self.writer.write(triples=item, **self.kwargs)
+        result = self.writer.write(triples=item)
         # pass results to next component (No need this is the end)
         self.global_state.caller = self
         # Used in case the pipeline framework needs this
