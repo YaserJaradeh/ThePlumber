@@ -153,5 +153,5 @@ class ProcessingNode(Node):
         self.global_state.caller = self
         self.push(final_result)
 
-    def process_data(self) -> List[SPOTriple]:
-        return [t.as_text for t in self.triples]
+    def process_data(self):  # -> List[SPOTriple]:
+        return [str(t) for t in self.triples]

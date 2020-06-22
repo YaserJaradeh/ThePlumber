@@ -11,10 +11,10 @@ class UserExtractor(BaseExtractor):
     rules = [
         (r"mean incub period", "mean incubation period", 1),
         (r"(basic reproduct|r0 estim)", "R0 estimates (average)", 1),
-        (r"mean serial", "mean serial interval", 1),
-        (r"mean incub period", "incubation period", r"\(\s*(\d+\.?\d*)\s*[,-]\s*(\d+\.?\d*)\s*\)"),
-        (r"(basic reproduct|r0 estim)", "95% Confidence interval", r"\((\s*|\s*\d*\s*\%\s*ci\s*[:,]\s*)(\d+\.?\d*)\s*[,-]\s*(\d+\.?\d*)\s*\)"),
-        (r"serial interv", "serial interval", r"\(\s*(\d+\.?\d*)\s*[,-]\s*(\d+\.?\d*)\s*\)"),
+        (r"mean serial|mean generat", "mean serial interval", 1),
+        (r"mean incub period", "incubation period", r"\(\s*(\d+\.?\d*)\s*[,-]?\s*(\d+\.?\d*)\s*\)"),
+        (r"(basic reproduct|r0 estim)", "95% Confidence interval", r"\((\s*|\s*\d*\s*\%\s*ci\s*[:,]\s*)(\d+\.?\d*)\s*[,-]?\s*(\d+\.?\d*)\s*\)"),
+        (r"serial interv|generat interv", "serial interval", r"\((\s*|\s*\d*\s*\%\s*ci\s*[:,]\s*)(\d+\.?\d*)\s*[,-]?\s*(\d+\.?\d*)\s*\)"),
 
     ]
 
