@@ -1,0 +1,11 @@
+pipeline:
+  name: test
+  components:
+    extractor: user
+    linker: dummy
+    resolver: dummy
+    reader: raw_file
+    writer: file
+  parameters:
+    input_file: './text/R36138.txt'
+    output_file: './text/R36138-triples.txt'
