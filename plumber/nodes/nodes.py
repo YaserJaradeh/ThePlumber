@@ -1,5 +1,5 @@
 from consecution import Node
-from plumber.components import BaseExtractor, BaseReader, BaseResolver, BaseWriter
+from plumber.components import BaseExtractor, BaseReader, BaseResolver, BaseWriter, Triple, Chain, Pair
 from plumber.components import BaseLinker
 from plumber.components import SPOTriple
 from typing import List, AnyStr
@@ -134,6 +134,10 @@ class ProcessingNode(Node):
     A processing node, part of a pipeline
     collects information from extractors, linkers, and resolvers and then it produces the final triples
     """
+
+    triples: List[Triple] = []
+    links: List[Pair] = []
+    chains: List[Chain] = []
 
     def begin(self):
         self.triples = []
