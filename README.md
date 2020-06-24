@@ -1,6 +1,6 @@
-# AutoKomplete 
-a.k.a. AuKo
+# The Plumber
+a.k.a. Plumber
 
-AuKo is a framework for KG completion, it extracts triples from NL text and map the triples to their KG representations
+Plumber is a framework for KG completion, it extracts triples from NL text and map the triples to their KG representations
 
 
