@@ -1,5 +1,6 @@
-from typing import List, Tuple
+from typing import List
 from plumber.discovery import PlumberClass
+from plumber.components.format import Pair
 
 
 class BaseLinker(PlumberClass):
@@ -12,7 +13,7 @@ class BaseLinker(PlumberClass):
         self.name = name
         self.kwargs = kwargs
 
-    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+    def get_links(self, text: str) -> List[Pair]:
         """
         gets the links in the text
         :param text: the text to search in
@@ -29,5 +30,5 @@ class DummyLinker(BaseLinker):
     def __init__(self, **kwargs):
         super().__init__(name="Dummy Linker", **kwargs)
 
-    def get_links(self, text: str) -> List[Tuple[str, str, str]]:
+    def get_links(self, text: str) -> List[Pair]:
         return []

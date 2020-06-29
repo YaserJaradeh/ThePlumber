@@ -1,11 +1,11 @@
 pipeline:
   name: test
   components:
-    extractor: user
-    linker: dummy
-    resolver: dummy
-    reader: raw_file
-    writer: file
+    extractor: openie
+    linker: falcon_wikidata_joint
+    resolver: stanford_coreference
+    reader: standard
+    writer: standard
   parameters:
     input_file: './text/R36138.txt'
     output_file: './text/R36138-triples.txt'

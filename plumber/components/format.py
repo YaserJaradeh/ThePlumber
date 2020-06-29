@@ -20,7 +20,13 @@ class Span:
         return self.surface_form
 
     def __hash__(self) -> int:
-        return super().__hash__()
+        return self.surface_form.__hash__() ^ self.start.__hash__() ^ self.end.__hash__()
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.surface_form == other.surface_form and self.start == other.start and self.end == other.end
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
     def __repr__(self) -> AnyStr:
         return self.__str__()
@@ -109,38 +115,44 @@ class SPOTriple:
     This class is used in the output only, and does not contain any information other than the surface form of the SPO
     """
 
-    def __init__(self, subject: AnyStr, predicate: AnyStr, object: AnyStr):
+    def __init__(self, subject: str, predicate: str, object: str):
         self.subject = subject
         self.predicate = predicate
         self.object = object
 
-    def __str__(self) -> AnyStr:
+    def __str__(self) -> str:
         return f"<{self.subject}> <{self.predicate}> <{self.object}>"
 
-    def __repr__(self) -> AnyStr:
+    def __repr__(self) -> str:
         return self.__str__()
+
+    @staticmethod
+    def from_triple(triple: Triple):
+        return SPOTriple(triple.subject.surface_form, triple.predicate.surface_form, triple.object.surface_form)
 
 
 class Pair:
     """
     A class representing a pair of values, used for linking, pairs the span and the mapping from a KG
     """
-    span: Span = None
-    mapping: AnyStr = None
+    span: str = None
+    mapping: str = None
+    link_type: str = None
 
-    def __init__(self, span: Span, mapping: AnyStr):
+    def __init__(self, mapping: str, span: str, link_type: str):
         self.span = span
         self.mapping = mapping
+        self.link_type = link_type
 
     @property
-    def left(self) -> Span:
+    def left(self) -> str:
         """
         Left side of the pair
-        :return: a Span
+        :return: a str
         """""
         return self.span
 
-    def right(self) -> AnyStr:
+    def right(self) -> str:
         """
         right side of the pair
         :return: a string of the mapping
