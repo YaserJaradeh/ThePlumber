@@ -69,4 +69,5 @@ class OLLIEClient:
         pass
 
     def __del__(self):
-        del os.environ['OLLIE_HOME']
+        if 'OLLIE_HOME' in os.environ:
+            del os.environ['OLLIE_HOME']

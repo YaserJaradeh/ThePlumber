@@ -127,4 +127,5 @@ class StanfordClient:
 
     def __del__(self):
         self.client.stop()
-        del os.environ['CORENLP_HOME']
+        if 'CORENLP_HOME' in os.environ:
+            del os.environ['CORENLP_HOME']
