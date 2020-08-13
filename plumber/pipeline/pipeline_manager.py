@@ -29,7 +29,7 @@ class PipelineParser:
         return get_classes_map()
 
     @staticmethod
-    def parse(config_file) -> Pipeline:
+    def parse(config_file) -> Tuple[Pipeline, Dict]:
         """
         Parses the yml file into a fully working auko pipeline
         :param config_file: the path of the yml config file
@@ -41,9 +41,13 @@ class PipelineParser:
             document = load(in_file, Loader=Loader)
             if not PipelineParser.__check_structure(document):
                 raise IOError('Configuration file is not in the correct format!')
-            components = PipelineParser.__get_components(document)
-            params = PipelineParser.__get_parameters(document)
-            return PipelineParser.__build_pipeline(components, **params)
+            return PipelineParser.create(document)
+
+    @staticmethod
+    def create(config_document: Dict) -> Tuple[Pipeline, Dict]:
+        components = PipelineParser.__get_components(config_document)
+        params = PipelineParser.__get_parameters(config_document)
+        return PipelineParser.__build_pipeline(components, **params)
 
     @staticmethod
     def parse_and_run(config_file):
@@ -51,8 +55,14 @@ class PipelineParser:
         Creates and runs the pipeline from the yml file with the given path
         :param config_file: the path of the yml file
         """
-        pipeline = PipelineParser.parse(config_file)
+        pipeline, params = PipelineParser.parse(config_file)
         pipeline.consume([1])
+        PipelineParser.clean_up(params)
+
+    @staticmethod
+    def clean_up(params: Dict):
+        params['stanford_client'].__del__()
+        params['ollie_client'].__del__()
 
     @staticmethod
     def __check_structure(document: Dict) -> bool:
@@ -117,7 +127,7 @@ class PipelineParser:
             return results
 
     @staticmethod
-    def __build_pipeline(components: Dict, **kwargs) -> Pipeline:
+    def __build_pipeline(components: Dict, **kwargs) -> Tuple[Pipeline, Dict]:
         """
         Builds the pipeline from the list of components
         appends all suitable nodes in the default order
@@ -198,7 +208,7 @@ class PipelineParser:
         writer = WritingNode(PipelineParser.__get_name(names_repo, 'writer', components['writer']),
                              PipelineParser.__lookup_class_name(components['writer'], 'writer')[0](**kwargs))
         main_node.add_downstream(writer)
-        return pipe
+        return pipe, kwargs
 
     @staticmethod
     def __get_name(repo: Dict, node_type: str, postfix: str = None):
@@ -221,4 +231,27 @@ class PipelineParser:
 if __name__ == '__main__':
     #pipe = PipelineParser.parse('config.yml')
     #pipe.plot()
-    PipelineParser.parse_and_run('config.yml')
+    resources = ["R12220", "R12223", "R12226", "R12231", "R12233", "R12235", "R12237", "R12241", "R12243", "R12245", "R12247", "R25005", "R36109", "R36114", "R36123", "R36138", "R36151", "R37001", "R37003", "R37006", "R37008"]
+    config = {
+        "pipeline": {
+            "name": "test",
+            "components": {
+                "extractor": "user",
+                "linker": "dummy",
+                "resolver": "dummy",
+                "reader": "raw_file",
+                "writer": "file"
+            },
+            "parameters": {
+                "input_file": './text/R36138.txt',
+                "output_file": './text/R36138-triples.txt'
+            }
+        }
+    }
+    for resource in resources:
+        config["pipeline"]["parameters"]["input_file"] = f"./text/{resource}.txt"
+        config["pipeline"]["parameters"]["output_file"] = f"./text/{resource}-triples.txt"
+        pipeline, params = PipelineParser.create(config)
+        pipeline.consume([1])
+        PipelineParser.clean_up(params)
+

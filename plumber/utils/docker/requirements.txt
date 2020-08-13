@@ -1,0 +1,4 @@
+cython
+spacy==2.3.0
+flask
+spacy-ann-linker

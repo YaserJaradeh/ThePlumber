@@ -71,14 +71,18 @@ class UserExtractor(BaseExtractor):
                 new_triple.add_subject('x', -1, -1, sent)
                 new_triple.add_predicate(predicate, -1, -1, sent)
                 if isinstance(guide, int):
-                    new_triple.add_object(self.get_number_after_mention(matches[0], numbers, guide).group(), -1, -1,
-                                          sent)
+                    number = self.get_number_after_mention(matches[0], numbers, guide)
+                    if number is None:
+                        continue
+                    new_triple.add_object(number.group(), -1, -1, sent)
                 else:
                     numbers = [match for match in re.finditer(guide, sent, re.MULTILINE)]
                     if len(numbers) == 0:
                         continue
-                    new_triple.add_object(self.get_number_after_mention(matches[0], numbers).group(), -1, -1,
-                                          sent)
+                    number = self.get_number_after_mention(matches[0], numbers)
+                    if number is None:
+                        continue
+                    new_triple.add_object(number.group(), -1, -1, sent)
                 result.append(new_triple)
         return result
 
@@ -86,6 +90,8 @@ class UserExtractor(BaseExtractor):
     def get_number_after_mention(match, matches, number_order=1):
         start_idx = match.end()
         suitable = list(filter(lambda m: m.start() > start_idx, matches))
+        if len(suitable) == 0:
+            return None
         return suitable[number_order - 1]
 
     @staticmethod

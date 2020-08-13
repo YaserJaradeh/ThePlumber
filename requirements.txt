@@ -7,9 +7,10 @@ consecution==0.2.0
 pandas==1.0.3
 nltk==3.5
 # need nltk.download('punkt')
-spacy==2.1.0
+spacy
 # need python -m spacy download en
-neuralcoref===4.0
+spacy-ann-linker
+neuralcoref==4.0
 hammock==0.2.4
 pyyaml
 datefinder
