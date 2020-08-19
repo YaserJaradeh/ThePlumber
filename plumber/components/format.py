@@ -142,6 +142,8 @@ class Pair:
     def __init__(self, mapping: str, span: str, link_type: str):
         self.span = span
         self.mapping = mapping
+        if self.mapping[0] == '<' and self.mapping[-1] == '>':
+            self.mapping = self.mapping[1:-1]
         self.link_type = link_type
 
     @property
@@ -162,5 +164,5 @@ class Pair:
     def __str__(self) -> AnyStr:
         return f"({self.left}, {self.right})"
 
-    def __repr__(self) -> AnyStr:
-        return self.__str__()
+    # def __repr__(self) -> AnyStr:
+    #    return self.__str__()

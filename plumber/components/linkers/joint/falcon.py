@@ -24,8 +24,8 @@ class FalconJointLinker(BaseLinker, BaseWebLinker):
             result = self.client.POST(json={"text": text}, params=params).json()
             ent_key = f'entities_{kg}'
             rel_key = f'relations_{kg}'
-            entities = [Pair(entity[0][1:-1], entity[1], 'entity') for entity in result[ent_key]] if ent_key in result else []
-            relations = [Pair(relation[0][1:-1], relation[1], 'relation') for relation in result[rel_key]] if rel_key in result else []
+            entities = [Pair(entity[0], entity[1], 'entity') for entity in result[ent_key]] if ent_key in result else []
+            relations = [Pair(relation[0], relation[1], 'relation') for relation in result[rel_key]] if rel_key in result else []
             return entities + relations
         except JSONDecodeError as ex:
             print(ex)
@@ -42,3 +42,8 @@ class FalconWikidataJointLinker(FalconJointLinker):
 
     def get_links(self, text: str) -> List[Pair]:
         return super().get_links(text)
+
+
+if __name__ == '__main__':
+    linker = FalconDBpediaJointLinker()
+    x = linker.get_links("Who is the wife of Barack Obama?")
