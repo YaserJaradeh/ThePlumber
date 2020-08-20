@@ -3,6 +3,7 @@ from .base import BaseLinker, BaseWebLinker, DummyLinker
 # ======= Entity linkers =======
 from .entity import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker, TagMeEntityLinker
 from .entity import TextRazorEntityLinker, TextRazorDBpediaLinker, TextRazorWikidataLinker
+from .entity import MeaningCloudEntityLinker
 # ======= Relation linkers =======
 
 # ======= Joint linkers =======
