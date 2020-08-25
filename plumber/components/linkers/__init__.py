@@ -1,5 +1,5 @@
 # ======= Base linkers =======
-from .base import BaseLinker, BaseWebLinker, DummyLinker
+from .base import BaseLinker, BaseWebLinker, DummyLinker, BaseSpacyANNLinker
 # ======= Entity linkers =======
 from .entity import DBpediaSpotlightEntityLinker, OpenTapiocaEntityLinker, TagMeEntityLinker
 from .entity import TextRazorEntityLinker, TextRazorDBpediaLinker, TextRazorWikidataLinker
@@ -9,3 +9,4 @@ from .entity import MeaningCloudEntityLinker
 # ======= Joint linkers =======
 from .joint import FalconJointLinker, FalconWikidataJointLinker, FalconDBpediaJointLinker
 from .joint import EARLJointLinker
+from .joint import WikidataSpacyANNJointLinker, DBpediaSpacyANNJointLinker
