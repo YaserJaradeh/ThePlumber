@@ -8,9 +8,8 @@ class BaseSpacyANNLinker(BaseLinker, BaseWebLinker):
 
     allowed_relation_types = []
 
-    def __init__(self, url: str, allowed_relation_types=None, **kwargs):
-        if allowed_relation_types is None:
-            self.allowed_relation_types = []
+    def __init__(self, url: str, allowed_relation_types, **kwargs):
+        self.allowed_relation_types = allowed_relation_types
         kwargs['api_url'] = url
         BaseLinker.__init__(self, name="Base Spacy ANN Linker", **kwargs)
         BaseWebLinker.__init__(self, **kwargs)

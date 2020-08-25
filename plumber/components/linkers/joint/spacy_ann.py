@@ -15,4 +15,4 @@ class WikidataSpacyANNJointLinker(BaseSpacyANNLinker):
 
 if __name__ == '__main__':
     linker = DBpediaSpacyANNJointLinker()
-    linker.get_links(text="Who is the wife of Barack Obama?")
+    x = linker.get_links(text="Who is the wife of Barack Obama?")
