@@ -10,3 +10,4 @@ from .entity import MeaningCloudEntityLinker
 from .joint import FalconJointLinker, FalconWikidataJointLinker, FalconDBpediaJointLinker
 from .joint import EARLJointLinker
 from .joint import WikidataSpacyANNJointLinker, DBpediaSpacyANNJointLinker
+from .joint import ESFalconWikidataJointLinker, ESFalconDBpediaJointLinker

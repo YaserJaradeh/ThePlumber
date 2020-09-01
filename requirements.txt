@@ -18,3 +18,4 @@ dateparser
 tagme
 textrazor
 MeaningCloud-python
+elasticsearch
