@@ -13,7 +13,7 @@ class ElasticSearchLookUp:
         self.es = Elasticsearch([ES_endpoint])
         self.doc_type = "doc"
 
-    def __search_in_es(self, index_name: str, recognized_strings: List[str]) -> List[Tuple[str, str]]:
+    def search_in_es(self, index_name: str, recognized_strings: List[str]) -> List[Tuple[str, str]]:
         results = []
         for query in recognized_strings:
             elastic_results = self.es.search(index=index_name, doc_type=self.doc_type, body={
@@ -35,7 +35,7 @@ class ElasticSearchLinker(BaseLinker):
         super().__init__(name="Elastic Search Based linker", **kwargs)
 
     @staticmethod
-    def __strip_to_ner(links: List[Pair]) -> Tuple[List[str], List[str]]:
+    def strip_to_ner(links: List[Pair]) -> Tuple[List[str], List[str]]:
         entities = [entity.span for entity in filter(lambda x: x.link_type == 'entity', links)]
         relations = [relation.span for relation in filter(lambda x: x.link_type == 'relation', links)]
         return entities, relations
@@ -53,9 +53,9 @@ class ESFalconDBpediaJointLinker(ElasticSearchLinker, ElasticSearchLookUp):
 
     def get_links(self, text: str) -> List[Pair]:
         from_ner = super().get_links(text=text)
-        ents, preds = self.__strip_to_ner(from_ner)
-        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in self.__search_in_es("dbentityindex", ents)]
-        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in self.__search_in_es("dbontologyindex", preds)]
+        ents, preds = self.strip_to_ner(from_ner)
+        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in self.search_in_es("dbentityindex", ents)]
+        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in self.search_in_es("dbontologyindex", preds)]
         return linked_entities + linked_relations
 
 
@@ -68,12 +68,12 @@ class ESFalconWikidataJointLinker(ElasticSearchLinker, ElasticSearchLookUp):
 
     def get_links(self, text: str) -> List[Pair]:
         from_ner = super().get_links(text=text)
-        ents, preds = self.__strip_to_ner(from_ner)
-        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in self.__search_in_es("wikidataentityindex", ents)]
-        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in self.__search_in_es("wikidatapropertyindex", preds)]
+        ents, preds = self.strip_to_ner(from_ner)
+        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in self.search_in_es("wikidataentityindex", ents)]
+        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in self.search_in_es("wikidatapropertyindex", preds)]
         return linked_entities + linked_relations
 
 
 if __name__ == '__main__':
-    linker = ESFalconDBpediaJointLinker()
+    linker = ESFalconWikidataJointLinker()
     x = linker.get_links(text="who is the wife of Barack Obama?")
