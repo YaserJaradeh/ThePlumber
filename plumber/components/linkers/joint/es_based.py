@@ -1,5 +1,7 @@
 from plumber.components.linkers.base import BaseLinker
 from plumber.components.linkers.joint import FalconWikidataJointLinker, FalconDBpediaJointLinker
+from plumber.components.linkers.joint import EARLJointLinker
+from plumber.components.linkers.entity import TagMeEntityLinker
 from plumber.components.format import Pair
 from typing import List, Tuple
 from elasticsearch import Elasticsearch
@@ -28,11 +30,14 @@ class ElasticSearchLookUp:
         return results
 
 
-class ElasticSearchLinker(BaseLinker):
+class ElasticSearchLinker(BaseLinker, ElasticSearchLookUp):
     linker: BaseLinker
+    entity_es_index_name: str
+    relation_es_index_name: str
 
-    def __init__(self, **kwargs):
-        super().__init__(name="Elastic Search Based linker", **kwargs)
+    def __init__(self, name="Elastic Search Based linker", **kwargs):
+        ElasticSearchLookUp.__init__(self)
+        BaseLinker.__init__(self, name=name, **kwargs)
 
     @staticmethod
     def strip_to_ner(links: List[Pair]) -> Tuple[List[str], List[str]]:
@@ -40,42 +45,73 @@ class ElasticSearchLinker(BaseLinker):
         relations = [relation.span for relation in filter(lambda x: x.link_type == 'relation', links)]
         return entities, relations
 
+    def check_execution_safety(self):
+        if self.linker is None or self.entity_es_index_name is None or self.relation_es_index_name is None:
+            raise RuntimeError("Linker property should be set correctly, as well as the entity/relation ES index name")
+
     def get_links(self, text: str) -> List[Pair]:
-        return self.linker.get_links(text=text)
+        self.check_execution_safety()
+        from_ner = self.linker.get_links(text=text)
+        ents, preds = self.strip_to_ner(from_ner)
+        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in
+                           self.search_in_es(self.entity_es_index_name, ents)]
+        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in
+                            self.search_in_es(self.relation_es_index_name, preds)]
+        return linked_entities + linked_relations
 
 
-class ESFalconDBpediaJointLinker(ElasticSearchLinker, ElasticSearchLookUp):
+class ESFalconDBpediaJointLinker(ElasticSearchLinker):
 
     def __init__(self, **kwargs):
-        ElasticSearchLinker.__init__(self, **kwargs)
-        ElasticSearchLookUp.__init__(self)
+        super().__init__(name="Falcon NER + ES (DBpedia) linker", **kwargs)
         self.linker = FalconDBpediaJointLinker(**kwargs)
-
-    def get_links(self, text: str) -> List[Pair]:
-        from_ner = super().get_links(text=text)
-        ents, preds = self.strip_to_ner(from_ner)
-        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in
-                           self.search_in_es("dbentityindex", ents)]
-        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in
-                            self.search_in_es("dbontologyindex", preds)]
-        return linked_entities + linked_relations
+        self.entity_es_index_name = "dbentityindex"
+        self.relation_es_index_name = "dbontologyindex"
 
 
-class ESFalconWikidataJointLinker(ElasticSearchLinker, ElasticSearchLookUp):
+class ESFalconWikidataJointLinker(ElasticSearchLinker):
 
     def __init__(self, **kwargs):
-        ElasticSearchLinker.__init__(self, **kwargs)
-        ElasticSearchLookUp.__init__(self)
+        super().__init__(name="Falcon NER + ES (Wikidata) linker", **kwargs)
         self.linker = FalconWikidataJointLinker(**kwargs)
+        self.entity_es_index_name = "wikidataentityindex"
+        self.relation_es_index_name = "wikidatapropertyindex"
 
-    def get_links(self, text: str) -> List[Pair]:
-        from_ner = super().get_links(text=text)
-        ents, preds = self.strip_to_ner(from_ner)
-        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in
-                           self.search_in_es("wikidataentityindex", ents)]
-        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in
-                            self.search_in_es("wikidatapropertyindex", preds)]
-        return linked_entities + linked_relations
+
+class ESEarlDBpediaJointLinker(ElasticSearchLinker):
+
+    def __init__(self, **kwargs):
+        super().__init__(name="EARL NER + ES (DBpedia) linker", **kwargs)
+        self.linker = EARLJointLinker(**kwargs)
+        self.entity_es_index_name = "dbentityindex"
+        self.relation_es_index_name = "dbontologyindex"
+
+
+class ESEarlWikidataJointLinker(ElasticSearchLinker):
+
+    def __init__(self, **kwargs):
+        super().__init__(name="EARL NER + ES (Wikidata) linker", **kwargs)
+        self.linker = EARLJointLinker(**kwargs)
+        self.entity_es_index_name = "wikidataentityindex"
+        self.relation_es_index_name = "wikidatapropertyindex"
+
+
+class ESTagMeDBpediaJointLinker(ElasticSearchLinker):
+
+    def __init__(self, **kwargs):
+        super().__init__(name="TagMe NER + ES (DBpedia) linker", **kwargs)
+        self.linker = TagMeEntityLinker(**kwargs)
+        self.entity_es_index_name = "dbentityindex"
+        self.relation_es_index_name = "dbontologyindex"
+
+
+class ESTagMeWikidataJointLinker(ElasticSearchLinker):
+
+    def __init__(self, **kwargs):
+        super().__init__(name="TagMe NER + ES (Wikidata) linker", **kwargs)
+        self.linker = TagMeEntityLinker(**kwargs)
+        self.entity_es_index_name = "wikidataentityindex"
+        self.relation_es_index_name = "wikidatapropertyindex"
 
 
 if __name__ == '__main__':

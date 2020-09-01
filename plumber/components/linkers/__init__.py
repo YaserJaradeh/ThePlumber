@@ -11,3 +11,5 @@ from .joint import FalconJointLinker, FalconWikidataJointLinker, FalconDBpediaJo
 from .joint import EARLJointLinker
 from .joint import WikidataSpacyANNJointLinker, DBpediaSpacyANNJointLinker
 from .joint import ESFalconWikidataJointLinker, ESFalconDBpediaJointLinker
+from .joint import ESEarlDBpediaJointLinker, ESEarlWikidataJointLinker
+from .joint import ESTagMeDBpediaJointLinker, ESTagMeWikidataJointLinker
