@@ -22,7 +22,7 @@ class ElasticSearchLookUp:
                 }
                 , "size": 10
             })
-            for result in elastic_results['hits']['hits']:
+            for result in elastic_results['hits']['hits'].sort(key=lambda x: x["_score"], reverse=True):
                 results.append((result["_source"]["uri"], query))
                 break
         return results
@@ -54,8 +54,10 @@ class ESFalconDBpediaJointLinker(ElasticSearchLinker, ElasticSearchLookUp):
     def get_links(self, text: str) -> List[Pair]:
         from_ner = super().get_links(text=text)
         ents, preds = self.strip_to_ner(from_ner)
-        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in self.search_in_es("dbentityindex", ents)]
-        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in self.search_in_es("dbontologyindex", preds)]
+        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in
+                           self.search_in_es("dbentityindex", ents)]
+        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in
+                            self.search_in_es("dbontologyindex", preds)]
         return linked_entities + linked_relations
 
 
@@ -69,8 +71,10 @@ class ESFalconWikidataJointLinker(ElasticSearchLinker, ElasticSearchLookUp):
     def get_links(self, text: str) -> List[Pair]:
         from_ner = super().get_links(text=text)
         ents, preds = self.strip_to_ner(from_ner)
-        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in self.search_in_es("wikidataentityindex", ents)]
-        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in self.search_in_es("wikidatapropertyindex", preds)]
+        linked_entities = [Pair(ent[0], ent[1], 'entity') for ent in
+                           self.search_in_es("wikidataentityindex", ents)]
+        linked_relations = [Pair(rel[0], rel[1], 'relation') for rel in
+                            self.search_in_es("wikidatapropertyindex", preds)]
         return linked_entities + linked_relations
 
 
