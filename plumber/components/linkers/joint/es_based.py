@@ -22,7 +22,7 @@ class ElasticSearchLookUp:
                 }
                 , "size": 10
             })
-            for result in elastic_results['hits']['hits'].sort(key=lambda x: x["_score"], reverse=True):
+            for result in elastic_results['hits']['hits']:
                 results.append((result["_source"]["uri"], query))
                 break
         return results
