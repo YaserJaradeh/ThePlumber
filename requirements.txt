@@ -19,3 +19,5 @@ tagme
 textrazor
 MeaningCloud-python
 elasticsearch
+tqdm
+requests
