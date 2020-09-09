@@ -3,7 +3,7 @@ from plumber.components.clients import OLLIEClient, StanfordClient
 # ===== Extractors =====
 from .extractors import BaseExtractor, StanfordBasedExtractor, DummyExtractor
 from .extractors import DependencyExtractor, OpenIEExtractor, KBPExtractor
-from .extractors import OllieExtractor, POSExtractor
+from .extractors import OllieExtractor, POSExtractor, ClausIEExtractor
 # ===== Resolvers =====
 from .resolvers import BaseResolver, StanfordBasedResolver, DummyResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
