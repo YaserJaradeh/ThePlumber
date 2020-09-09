@@ -4,6 +4,7 @@ from plumber.components.clients import OLLIEClient, StanfordClient
 from .extractors import BaseExtractor, StanfordBasedExtractor, DummyExtractor
 from .extractors import DependencyExtractor, OpenIEExtractor, KBPExtractor
 from .extractors import OllieExtractor, POSExtractor, ClausIEExtractor
+from .extractors import GrapheneExtractor
 # ===== Resolvers =====
 from .resolvers import BaseResolver, StanfordBasedResolver, DummyResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver

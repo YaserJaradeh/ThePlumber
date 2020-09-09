@@ -5,3 +5,4 @@ from .kbp import KBPExtractor
 from .ollie import OllieExtractor
 from .pos import POSExtractor
 from .clausie import ClausIEExtractor
+from .graphene import GrapheneExtractor
