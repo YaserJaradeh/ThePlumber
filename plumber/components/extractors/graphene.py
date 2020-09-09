@@ -6,6 +6,7 @@ import requests
 GRAPHENE_URL = "http://localhost:8080/relationExtraction/text"
 
 
+# Implementation of the API of the docker here: https://github.com/Lambda-3/Graphene
 class GrapheneExtractor(BaseExtractor):
 
     def __init__(self, **kwargs):
