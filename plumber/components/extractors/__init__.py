@@ -6,3 +6,4 @@ from .ollie import OllieExtractor
 from .pos import POSExtractor
 from .clausie import ClausIEExtractor
 from .graphene import GrapheneExtractor
+from .minie import MinIEExtractor
