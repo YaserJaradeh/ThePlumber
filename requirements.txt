@@ -22,3 +22,4 @@ elasticsearch
 tqdm
 requests
 pyjnius
+gdown
