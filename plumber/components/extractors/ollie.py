@@ -39,16 +39,16 @@ class OllieExtractor(OllieBasedExtractor):
         """
         triple = Triple()
         ###########################
-        start_idx = sentence.find(subj) + padding
-        end_idx = start_idx + len(subj)
-        triple.add_subject(subj, start_idx, end_idx, text)
+        start_idx = sentence.find(str(subj)) + padding
+        end_idx = start_idx + len(str(subj))
+        triple.add_subject(str(subj), start_idx, end_idx, text)
         ###########################
-        start_idx = sentence.find(pred) + padding
-        end_idx = start_idx + len(pred)
-        triple.add_predicate(pred, start_idx, end_idx, text)
+        start_idx = sentence.find(str(pred)) + padding
+        end_idx = start_idx + len(str(pred))
+        triple.add_predicate(str(pred), start_idx, end_idx, text)
         ###########################
-        start_idx = sentence.find(obj) + padding
-        end_idx = start_idx + len(obj)
-        triple.add_object(obj, start_idx, end_idx, text)
+        start_idx = sentence.find(str(obj)) + padding
+        end_idx = start_idx + len(str(obj))
+        triple.add_object(str(obj), start_idx, end_idx, text)
         ###########################
         return triple
