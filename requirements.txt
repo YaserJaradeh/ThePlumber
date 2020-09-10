@@ -21,3 +21,4 @@ MeaningCloud-python
 elasticsearch
 tqdm
 requests
+pyjnius
