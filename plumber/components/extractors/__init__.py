@@ -7,3 +7,4 @@ from .pos import POSExtractor
 from .clausie import ClausIEExtractor
 from .graphene import GrapheneExtractor
 from .minie import MinIEExtractor
+from .reverb import ReVerbExtractor
