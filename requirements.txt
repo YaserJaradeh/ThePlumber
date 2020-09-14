@@ -22,3 +22,4 @@ elasticsearch
 tqdm==4.47.0
 requests
 gdown
+sparql-client
