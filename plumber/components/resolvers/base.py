@@ -1,5 +1,4 @@
 from typing import List
-from plumber.components import StanfordClient
 from plumber.components.format import Chain
 from plumber.discovery import PlumberClass
 
