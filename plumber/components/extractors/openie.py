@@ -1,5 +1,4 @@
 from typing import List
-from plumber.components.clients.stanford import StanfordClient
 from plumber.components.extractors.base import StanfordBasedExtractor
 from plumber.components.format import Triple
 
