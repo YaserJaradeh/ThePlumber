@@ -3,7 +3,7 @@ from plumber.components.extractors.base import BaseExtractor
 from plumber.components.format import Triple
 import requests
 
-GRAPHENE_URL = "http://localhost:8080/relationExtraction/text"
+GRAPHENE_URL = "http://localhost:8088/relationExtraction/text"
 
 
 # Implementation of the API of the docker here: https://github.com/Lambda-3/Graphene
