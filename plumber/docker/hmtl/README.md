@@ -14,3 +14,11 @@ curl --location --request POST 'http://localhost:11111/jmd/' \
     "text": "My mother likes Goldman. She buys there clothes each month. She also like Dolce & Gabana."
 }'
 ```
+
+## Alternative setup method
+
+you can just clone the docker image from docker hub
+
+```
+docker pull jaradeh/plumber:hmtl
+```
