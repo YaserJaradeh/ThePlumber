@@ -1,5 +1,4 @@
 from typing import List
-from plumber.components.clients.ollie import OLLIEClient
 from plumber.components.extractors.base import OllieBasedExtractor
 from plumber.components.format import Triple
 import nltk
