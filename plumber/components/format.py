@@ -1,4 +1,4 @@
-from typing import List, AnyStr
+from typing import List, AnyStr, Tuple
 
 
 class Span:
@@ -125,6 +125,41 @@ class SPOTriple:
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    def __get_ids(self) -> Tuple[str, str, str]:
+        if '/' in self.subject:
+            sub = self.subject[self.subject.rfind('/')+1:]
+            if sub[0] == '<':
+                sub = sub[1:]
+            if sub[-1] == '>':
+                sub = sub[:-1]
+        else:
+            sub = self.subject
+        ######################
+        if '/' in self.predicate:
+            pred = self.predicate[self.predicate.rfind('/') + 1:]
+            if pred[0] == '<':
+                pred = pred[1:]
+            if pred[-1] == '>':
+                pred = pred[:-1]
+        else:
+            pred = self.predicate
+        ######################
+        if '/' in self.object:
+            obj = self.object[self.object.rfind('/') + 1:]
+            pred = self.predicate[self.predicate.rfind('/') + 1:]
+            if obj[0] == '<':
+                obj = obj[1:]
+            if obj[-1] == '>':
+                obj = obj[:-1]
+        else:
+            obj = self.object
+        ######################
+        return sub, pred, obj
+
+    def short_form(self) -> str:
+        ids = self.__get_ids()
+        return f"{ids[0]}, {ids[1]}, {ids[2]}"
 
     @staticmethod
     def from_triple(triple: Triple):

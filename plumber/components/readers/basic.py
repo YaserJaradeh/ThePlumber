@@ -19,7 +19,7 @@ class RawFileReader(BaseReader):
 
     def read(self) -> AnyStr:
         if 'input_file' not in self.kwargs:
-            raise ValueError('input_file must be set for file writers')
+            raise ValueError('input_file must be set for file reader')
         file_path = self.kwargs['input_file']
         if not exists(file_path):
             raise ValueError(f"File path provided is non existence ({file_path})")

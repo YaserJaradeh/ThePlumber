@@ -17,8 +17,8 @@ from .linkers import MeaningCloudEntityLinker, ESFalconDBpediaJointLinker, ESFal
 from .linkers import ESEarlDBpediaJointLinker, ESEarlWikidataJointLinker
 from .linkers import ESTagMeDBpediaJointLinker, ESTagMeWikidataJointLinker
 # ===== Readers =====
-from .readers import BaseReader, StandardReader, RawFileReader
+from .readers import BaseReader, StandardReader, RawFileReader, FeedReader
 # ===== Writers =====
-from .writers import StandardWriter, FileWriter, BaseWriter
+from .writers import StandardWriter, FileWriter, BaseWriter, AppendTSVWriter
 # ===== Utils =====
 from .format import Chain, Span, Triple, Pair, SPOTriple
