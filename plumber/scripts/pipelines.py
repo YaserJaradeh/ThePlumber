@@ -6,7 +6,7 @@ resolvers = ['Stanford', 'SpacyNeural', 'HMTL']
 dbp_linkers = ['MeaningCloudEntity', 'DBpediaSpotlightEntity', 'TagMeEntity',
            'TextRazorDBpedia', 'EARLJoint', 'ESFalconDBpediaJoint', 'ESEarlDBpediaJoint',
            'ESTagMeDBpediaJoint', 'FalconDBpediaJoint', 'DBpediaSpacyANNJoint']
-wd_linkers = ['AmbiverseEntity', 'OpenTapiocaEntity', 'TextRazorWikidata''ESFalconWikidataJoint', 'ESEarlWikidataJoint',
+wd_linkers = ['AmbiverseEntity', 'OpenTapiocaEntity', 'TextRazorWikidata', 'ESFalconWikidataJoint', 'ESEarlWikidataJoint',
               'ESTagMeWikidataJoint', 'FalconWikidataJoint', 'WikidataSpacyANNJoint']
 
 
