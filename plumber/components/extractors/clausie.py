@@ -194,11 +194,15 @@ class Corpus(list):
         corpus = cls()
         for line in stream:
             if not print_sent_confidence:
+                if len(line.decode().split('\t')) != 4:
+                    continue
                 (ident, subj, pred, obj) = line.decode().split('\t')
                 triple = Triple(ident, subj.strip('"'), pred.strip('"'),
                                 obj.strip('"'), None)
                 corpus.append(triple)
             else:
+                if len(line.decode().split('\t')) != 5:
+                    continue
                 (ident, subj, pred, obj, conf) = line.decode().split('\t')
                 triple = Triple(ident, subj.strip('"'), pred.strip('"'),
                                 obj.strip('"'), conf.strip('"'))
