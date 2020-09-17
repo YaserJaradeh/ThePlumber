@@ -18,7 +18,7 @@ class HMTLResolver(BaseResolver):
             'content-type': 'application/json'
         }
 
-        response = requests.request("POST", HMTL_URL, headers=headers, data=payload)
+        response = requests.request("POST", HMTL_URL, headers=headers, data=payload.encode('utf-8'))
 
         content = response.json()
         chains = []

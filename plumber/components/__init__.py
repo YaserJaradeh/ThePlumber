@@ -8,6 +8,7 @@ from .extractors import GrapheneExtractor, MinIEExtractor, ReVerbExtractor
 # ===== Resolvers =====
 from .resolvers import BaseResolver, StanfordBasedResolver, DummyResolver
 from .resolvers import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
+from .resolvers import HMTLResolver
 # ===== Linkers =====
 from .linkers import BaseLinker, DummyLinker
 from .linkers import FalconJointLinker, FalconDBpediaJointLinker, FalconWikidataJointLinker

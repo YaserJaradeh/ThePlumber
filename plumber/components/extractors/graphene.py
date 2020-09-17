@@ -18,7 +18,7 @@ class GrapheneExtractor(BaseExtractor):
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
-        response = requests.request("POST", GRAPHENE_URL, headers=headers, data=payload)
+        response = requests.request("POST", GRAPHENE_URL, headers=headers, data=payload.encode('utf-8'))
         sentences = response.json()['sentences']
         triples = []
         for sentence in sentences:

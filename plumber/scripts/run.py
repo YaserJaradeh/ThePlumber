@@ -42,6 +42,8 @@ def run_dbp_pipeline(parts, webnlg_file):
     if not os.path.exists('../results/dbp/plumber'):
         os.mkdir('../results/dbp/plumber')
     output_file_path = f'../results/dbp/plumber/pipeline-{parts[0]}.tsv'
+    if os.path.exists(output_file_path):
+        return
     with open(output_file_path, 'a+'):
         with open(webnlg_file, 'r') as in_file:
             dataset = json.load(in_file)

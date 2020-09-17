@@ -42,18 +42,19 @@ class SpacyNeuralCoreferenceResolver(BaseResolver):
             'Content-Type': 'application/json'
         }
 
-        response = requests.request("POST", SERVICE_URL, headers=headers, data=payload)
+        response = requests.request("POST", SERVICE_URL, headers=headers, data=payload.encode('utf-8'))
         as_json = response.json()
         chains = []
-        mentions = {as_json['mentions'][i]['text']: i for i in range(len(as_json['mentions']))}
-        for cluster in as_json['clusters']:
-            chain = Chain(cluster[0])
-            for alias in cluster[1:]:
-                chain.add_alias(alias,
-                                as_json['mentions'][mentions[alias]]['start'],
-                                as_json['mentions'][mentions[alias]]['end'],
-                                text)
-            chains.append(chain)
+        if 'mentions' in as_json:
+            mentions = {as_json['mentions'][i]['text']: i for i in range(len(as_json['mentions']))}
+            for cluster in as_json['clusters']:
+                chain = Chain(cluster[0])
+                for alias in cluster[1:]:
+                    chain.add_alias(alias,
+                                    as_json['mentions'][mentions[alias]]['start'],
+                                    as_json['mentions'][mentions[alias]]['end'],
+                                    text)
+                chains.append(chain)
         return chains
 
 

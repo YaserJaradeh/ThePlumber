@@ -20,7 +20,7 @@ class AmbiverseEntityLinker(BaseLinker):
             'content-type': 'application/json'
         }
 
-        response = requests.request("POST", AMBIVERSE_URL, headers=headers, data=payload)
+        response = requests.request("POST", AMBIVERSE_URL, headers=headers, data=payload.encode('utf-8'))
         try:
             return [Pair(ent['entity']['id'], ent['text'], 'entity') for ent in response.json()["matches"] if 'id' in ent['entity']]
         except Exception as e:
