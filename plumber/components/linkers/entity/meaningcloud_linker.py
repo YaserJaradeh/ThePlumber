@@ -19,6 +19,8 @@ class MeaningCloudEntityLinker(BaseLinker):
             entities = topics_response.getEntities()
             links = []
             for entity in entities:
+                if 'semld_list' not in entity:
+                    continue
                 found = list(filter(lambda x: x[:23] == 'http://en.wikipedia.org', entity['semld_list']))
                 if len(found) > 0:
                     links.append(
