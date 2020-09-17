@@ -67,17 +67,32 @@ class ReVerbExtractor(BaseExtractor):
         for triple in extracted_triples:
             trp = Triple()
             # ========== Subject ==============
-            start_index = text.index(triple[0])
-            end_index = start_index + len(triple[0])
-            trp.add_subject(triple[0], start_index, end_index, text)
+            sbj = triple[0]
+            if sbj not in text:
+                start_index = -1
+                end_index = -1
+            else:
+                start_index = text.index(sbj)
+                end_index = start_index + len(sbj)
+            trp.add_subject(sbj, start_index, end_index, text)
             # ========== Predicate ==============
-            start_index = text.index(triple[1])
-            end_index = start_index + len(triple[1])
-            trp.add_predicate(triple[1], start_index, end_index, text)
+            pred = triple[1]
+            if pred not in text:
+                start_index = -1
+                end_index = -1
+            else:
+                start_index = text.index(pred)
+                end_index = start_index + len(pred)
+            trp.add_predicate(pred, start_index, end_index, text)
             # ========== Object ==============
-            start_index = text.index(triple[2])
-            end_index = start_index + len(triple[2])
-            trp.add_object(triple[2], start_index, end_index, text)
+            obj = triple[2]
+            if obj not in text:
+                start_index = -1
+                end_index = -1
+            else:
+                start_index = text.index(obj)
+                end_index = start_index + len(obj)
+            trp.add_object(obj, start_index, end_index, text)
             # ========== Add triple to final output
             triples.append(trp)
         return triples
