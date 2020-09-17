@@ -4,6 +4,7 @@ from plumber.components import BaseLinker
 from plumber.components import SPOTriple
 from typing import List, AnyStr
 import itertools
+import logging
 
 
 class AggregationNode(Node):
@@ -57,7 +58,11 @@ class ExtractionNode(Node):
     def process(self, item: AnyStr):
         # item here is the text (str)
         # process text into triples using extractor
-        result = self.extractor.get_triples(text=item)
+        try:
+            result = self.extractor.get_triples(text=item)
+        except Exception as exp:
+            result = []
+            logging.error('Error at %s', 'division', exc_info=exp)
         if len(self.global_state.triples) == 0:
             self.global_state.triples = result
         else:
@@ -101,8 +106,12 @@ class LinkingNode(Node):
     def process(self, item: List[AnyStr]):
         # item here is the text (str)
         # Get all links from linker
-        for triple in item:
-            self.results.append(self.linker.get_links(triple))
+        try:
+            for triple in item:
+                self.results.append(self.linker.get_links(triple))
+        except Exception as exp:
+            self.results.append([])
+            logging.error('Error at %s', 'division', exc_info=exp)
 
     def end(self):
         self.global_state.caller = self
