@@ -44,9 +44,11 @@ class PipelineParser:
             return PipelineParser.create(document)
 
     @staticmethod
-    def create(config_document: Dict) -> Tuple[Pipeline, Dict]:
+    def create(config_document: Dict, **kwargs) -> Tuple[Pipeline, Dict]:
         components = PipelineParser.__get_components(config_document)
         params = PipelineParser.__get_parameters(config_document)
+        if kwargs is not None:
+            params = {**params, **kwargs}
         return PipelineParser.__build_pipeline(components, **params)
 
     @staticmethod
@@ -143,10 +145,10 @@ class PipelineParser:
         :return: Returns the pipeline object
         """
         names_repo = {}
-        stan = StanfordClient()
-        ollie = OLLIEClient()
-        kwargs['stanford_client'] = stan
-        kwargs['ollie_client'] = ollie
+        # stan = StanfordClient()
+        # ollie = OLLIEClient()
+        # kwargs['stanford_client'] = stan
+        # kwargs['ollie_client'] = ollie
         reader_node = ReadingNode(PipelineParser.__get_name(names_repo, 'reader', components['reader']),
                                   PipelineParser.__lookup_class_name(components['reader'], 'reader')[0](**kwargs))
         main_node = ProcessingNode(PipelineParser.__get_name(names_repo, 'Processor'))
