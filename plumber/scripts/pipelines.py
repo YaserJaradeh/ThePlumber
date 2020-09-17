@@ -2,7 +2,7 @@ from itertools import combinations
 from typing import List
 
 extractors = ['ClausIE', 'Dependency', 'Graphene', 'KBP', 'MinIE', 'Ollie', 'OpenIE', 'POS', 'ReVerb']
-resolvers = ['Stanford', 'SpacyNeural', 'HMTL']
+resolvers = ['StanfordCoreference', 'SpacyNeuralCoreference', 'HMTL']
 dbp_linkers = ['MeaningCloudEntity', 'DBpediaSpotlightEntity', 'TagMeEntity',
            'TextRazorDBpedia', 'EARLJoint', 'ESFalconDBpediaJoint', 'ESEarlDBpediaJoint',
            'ESTagMeDBpediaJoint', 'FalconDBpediaJoint', 'DBpediaSpacyANNJoint']
@@ -38,15 +38,33 @@ def __get_components_recursive(ext_count: int, res_count: int, link_count: int, 
 
 
 def generate_all_possible_pipelines(kg: str):
-    print('Generating Pipelines!')
+    print(f'Generating Pipelines for {kg}!')
     pipes = __get_components_recursive(1, 1, 1, [], kg)
-    print('Writing Pipelines!')
+    print(f'Writing Pipelines for {kg}!')
     with open(f'pipelines-{kg}.tsv', 'a+') as out_file:
         out_file.write(f'Number\tExtractors\tResolvers\tLinkers\n')
         for index, pipe in enumerate(pipes):
             out_file.write(f'{index}\t{",".join(pipe[0])}\t{",".join(pipe[1])}\t{",".join(pipe[2])}\n')
 
 
+def generate_single_pipelines(kg: str):
+    print(f'Generating Single Pipelines for {kg}!')
+    pipes = []
+    linkers = __choose_linkers_list(kg)
+    for extractor in extractors:
+        for resolver in resolvers:
+            for linker in linkers:
+                pipes.append((extractor, resolver, linker))
+    print(f'Writing Single Pipelines for {kg}!')
+    with open(f'pipelines-single-{kg}.tsv', 'a+') as out_file:
+        out_file.write(f'Number\tExtractors\tResolvers\tLinkers\n')
+        for index, pipe in enumerate(pipes):
+            out_file.write(f'{index}\t{pipe[0]}\t{pipe[1]}\t{pipe[2]}\n')
+
+
 if __name__ == '__main__':
     generate_all_possible_pipelines('dbp')
     generate_all_possible_pipelines('wd')
+    ###############################
+    generate_single_pipelines('dbp')
+    generate_single_pipelines('wd')
