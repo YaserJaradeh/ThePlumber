@@ -19,7 +19,7 @@ class MinIEExtractor(BaseExtractor):
             'Content-Type': 'text/plain'
         }
 
-        response = requests.request("POST", MINIE_URL, headers=headers, data=payload)
+        response = requests.request("POST", MINIE_URL, headers=headers, data=payload.encode('utf-8'))
         facts = response.json()['facts']
 
         triples = []
