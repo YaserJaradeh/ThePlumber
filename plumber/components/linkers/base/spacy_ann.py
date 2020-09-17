@@ -18,7 +18,6 @@ class BaseSpacyANNLinker(BaseLinker, BaseWebLinker):
         result = self.client.link.POST(json={"text": text}).json()
         links = []
         for entry in result:
-            link_type = None
             if entry['type'] in self.allowed_relation_types:
                 link_type = 'relation'
             else:

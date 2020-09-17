@@ -23,7 +23,8 @@ class Span:
         return self.surface_form.__hash__() ^ self.start.__hash__() ^ self.end.__hash__()
 
     def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.surface_form == other.surface_form and self.start == other.start and self.end == other.end
+        return isinstance(other,
+                          self.__class__) and self.surface_form == other.surface_form and self.start == other.start and self.end == other.end
 
     def __ne__(self, other):
         return not self.__eq__(other)
@@ -128,7 +129,7 @@ class SPOTriple:
 
     def __get_ids(self) -> Tuple[str, str, str]:
         if '/' in self.subject:
-            sub = self.subject[self.subject.rfind('/')+1:]
+            sub = self.subject[self.subject.rfind('/') + 1:]
             if sub[0] == '<':
                 sub = sub[1:]
             if sub[-1] == '>':
@@ -158,8 +159,11 @@ class SPOTriple:
         return sub, pred, obj
 
     def short_form(self) -> str:
-        ids = self.__get_ids()
-        return f"{ids[0]}, {ids[1]}, {ids[2]}"
+        try:
+            ids = self.__get_ids()
+            return f"{ids[0]}, {ids[1]}, {ids[2]}"
+        except Exception as ex:
+            return ""
 
     @staticmethod
     def from_triple(triple: Triple):
