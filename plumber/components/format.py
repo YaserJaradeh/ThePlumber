@@ -177,7 +177,7 @@ class Pair:
     def __init__(self, mapping: str, span: str, link_type: str):
         self.span = span
         self.mapping = mapping
-        if self.mapping[0] == '<' and self.mapping[-1] == '>':
+        if len(self.mapping) > 0 and self.mapping[0] == '<' and self.mapping[-1] == '>':
             self.mapping = self.mapping[1:-1]
         self.link_type = link_type
 
