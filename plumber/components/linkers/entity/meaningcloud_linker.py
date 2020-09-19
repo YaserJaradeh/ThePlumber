@@ -2,19 +2,29 @@ from plumber.components.linkers.base import BaseLinker
 from plumber.components.format import Pair
 from typing import List
 import meaningcloud
+from random import randint
+
+
+MEANING_CLOUD_KEYS = ['dba7075ffe53d945f44e92fd13dd420e',
+                      '66a32925ab31d259206f53b84bc12643',
+                      '5386417778500e3fd2e4e3f7b0db2835',
+                      '4e1a435d7c08f2b9106a6173bbb40497']
 
 
 class MeaningCloudEntityLinker(BaseLinker):
     # Name of the model to use. Example: "IAB_en" by default = "IPTC_en"
     model = 'IAB_en'
-    license_key = '66a32925ab31d259206f53b84bc12643'
 
     def __init__(self, **kwargs):
         BaseLinker.__init__(self, name="Meaning Cloud entity linker", **kwargs)
 
     def get_links(self, text: str) -> List[Pair]:
         topics_response = meaningcloud.TopicsResponse(
-            meaningcloud.TopicsRequest(self.license_key, txt=text, lang='en', topicType='e').sendReq())
+            meaningcloud.TopicsRequest(
+                MEANING_CLOUD_KEYS[randint(0, len(MEANING_CLOUD_KEYS) - 1)],
+                txt=text,
+                lang='en',
+                topicType='e').sendReq())
         if topics_response.isSuccessful():
             entities = topics_response.getEntities()
             links = []
