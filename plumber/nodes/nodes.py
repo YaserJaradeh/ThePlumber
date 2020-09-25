@@ -62,7 +62,7 @@ class ExtractionNode(Node):
             result = self.extractor.get_triples(text=item)
         except Exception as exp:
             result = []
-            logging.error('Error at %s', 'division', exc_info=exp)
+            logging.error('Error at %s', f'Extraction Node {self.name}', exc_info=exp)
         if len(self.global_state.triples) == 0:
             self.global_state.triples = result
         else:
@@ -84,7 +84,11 @@ class ResolutionNode(Node):
     def process(self, item: AnyStr):
         # item here is the text (str)
         # Get coreference resolution chains
-        result = self.resolver.get_coreference_chains(text=item)
+        try:
+            result = self.resolver.get_coreference_chains(text=item)
+        except Exception as exp:
+            result = []
+            logging.error('Error at %s', f'Resolution Node {self.name}', exc_info=exp)
         # pass results (chains) to next component
         self.global_state.caller = self
         self.push(result)
@@ -111,7 +115,7 @@ class LinkingNode(Node):
                 self.results.append(self.linker.get_links(triple))
         except Exception as exp:
             self.results.append([])
-            logging.error('Error at %s', 'division', exc_info=exp)
+            logging.error('Error at %s', f'Linking Node {self.name}', exc_info=exp)
 
     def end(self):
         self.global_state.caller = self
