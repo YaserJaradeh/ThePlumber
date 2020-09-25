@@ -22,9 +22,9 @@ kwargs['stanford_client'] = stan
 kwargs['ollie_client'] = ollie
 
 
-def run_webnlg_on_all_single_dbp_pipelines(webnlg_file: str):
+def run_webnlg_on_pipelines(pipelines_file: str, webnlg_file: str):
     pool = mp.Pool(mp.cpu_count()-2)
-    with open('pipelines-single-dbp.tsv', 'r') as pipe_file:
+    with open(pipelines_file, 'r') as pipe_file:
         pipes = [pipe.strip().split('\t') for idx, pipe in enumerate(pipe_file) if idx > 0]
         print(pipes[:10])
         pool.map(partial(run_dbp_pipeline, webnlg_file=webnlg_file), pipes)
@@ -34,6 +34,10 @@ def run_webnlg_on_all_single_dbp_pipelines(webnlg_file: str):
         #         continue
         #     run_dbp_pipeline(dataset, kwargs, line)
     PipelineParser.clean_up(kwargs)
+
+
+def run_webnlg_on_all_single_dbp_pipelines(webnlg_file: str):
+    run_webnlg_on_pipelines('pipelines-single-dbp.tsv', webnlg_file)
 
 
 def run_dbp_pipeline(parts, webnlg_file):
@@ -69,5 +73,6 @@ def run_dbp_pipeline(parts, webnlg_file):
 
 
 if __name__ == '__main__':
-    create_directory_structure()
-    run_webnlg_on_all_single_dbp_pipelines('../datasets/WebNLG/webnlg_v2_dev.json')
+    # create_directory_structure()
+    # run_webnlg_on_all_single_dbp_pipelines('../datasets/WebNLG/webnlg_v2_test.json')
+    run_webnlg_on_pipelines('pipelines-dbp-distil.tsv', '../datasets/WebNLG/webnlg_v2_train.json')
