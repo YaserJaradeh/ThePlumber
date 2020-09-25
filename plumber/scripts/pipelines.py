@@ -62,9 +62,28 @@ def generate_single_pipelines(kg: str):
             out_file.write(f'{index}\t{pipe[0]}\t{pipe[1]}\t{pipe[2]}\n')
 
 
+def generate_distil_pipelines(distil_extractors, distil_resolvers, distil_linkers):
+    print(f'Generating distil pipelines!')
+    pipes = []
+    for extractor in distil_extractors:
+        for resolver in distil_resolvers:
+            for linker in distil_linkers:
+                pipes.append((extractor, resolver, linker))
+    print(f'Writing distil pipelines!')
+    with open(f'pipelines-distil.tsv', 'a+') as out_file:
+        out_file.write(f'Number\tExtractors\tResolvers\tLinkers\n')
+        for index, pipe in enumerate(pipes):
+            out_file.write(f'{index}\t{pipe[0]}\t{pipe[1]}\t{pipe[2]}\n')
+
+
 if __name__ == '__main__':
-    generate_all_possible_pipelines('dbp')
-    generate_all_possible_pipelines('wd')
+    # generate_all_possible_pipelines('dbp')
+    # generate_all_possible_pipelines('wd')
     ###############################
-    generate_single_pipelines('dbp')
-    generate_single_pipelines('wd')
+    # generate_single_pipelines('dbp')
+    # generate_single_pipelines('wd')
+    ###############################
+    distil_extractors = ['Graphene', 'ClausIE', 'Ollie', 'OpenIE']
+    distil_resolvers = ['StanfordCoreference', 'HMTL']
+    distil_linkers = ['EARLJoint', 'ESFalconDBpediaJoint', 'FalconDBpediaJoint', 'DBpediaSpacyANNJoint']
+    generate_distil_pipelines(distil_extractors, distil_resolvers, distil_linkers)
