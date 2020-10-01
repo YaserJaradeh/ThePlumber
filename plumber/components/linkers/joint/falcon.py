@@ -1,7 +1,7 @@
 from json import JSONDecodeError
 
-from plumber.components.linkers.base import BaseLinker, BaseWebLinker
-from plumber.components.format import Pair
+from components.linkers.base import BaseLinker, BaseWebLinker
+from components.format import Pair
 from typing import List
 
 

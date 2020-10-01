@@ -1,5 +1,5 @@
 from typing import AnyStr
-from plumber.discovery import PlumberClass
+from discovery import PlumberClass
 
 
 class BaseReader(PlumberClass):

@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.format import SPOTriple
-from plumber.discovery import PlumberClass
+from components.format import SPOTriple
+from discovery import PlumberClass
 
 
 class BaseWriter(PlumberClass):

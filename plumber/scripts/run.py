@@ -1,8 +1,8 @@
 import json
 import os
 from tqdm import tqdm
-from plumber.pipeline.pipeline_manager import PipelineParser
-from plumber.components import *
+from pipeline.pipeline_manager import PipelineParser
+from components import *
 import multiprocessing as mp
 from functools import partial
 

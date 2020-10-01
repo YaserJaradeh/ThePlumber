@@ -6,8 +6,8 @@ import os
 import subprocess
 import tempfile
 from collections import namedtuple
-from plumber.components.extractors import BaseExtractor
-from plumber.components.format import Triple as PTriple
+from components.extractors import BaseExtractor
+from components.format import Triple as PTriple
 from typing import List
 import nltk
 

@@ -1,7 +1,7 @@
 from typing import List
-from plumber.components import StanfordClient, OLLIEClient
-from plumber.discovery import PlumberClass
-from plumber.components.format import Triple
+from components import StanfordClient, OLLIEClient
+from discovery import PlumberClass
+from components.format import Triple
 
 
 class BaseExtractor(PlumberClass):

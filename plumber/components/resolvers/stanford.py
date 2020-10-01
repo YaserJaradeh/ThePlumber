@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.resolvers.base import StanfordBasedResolver
-from plumber.components.format import Chain
+from components.resolvers.base import StanfordBasedResolver
+from components.format import Chain
 
 
 class StanfordCoreferenceResolver(StanfordBasedResolver):

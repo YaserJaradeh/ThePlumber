@@ -1,6 +1,6 @@
 from .base import BaseWriter
 from typing import List
-from plumber.components.format import SPOTriple
+from components.format import SPOTriple
 
 
 class AppendTSVWriter(BaseWriter):

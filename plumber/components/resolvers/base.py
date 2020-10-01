@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.format import Chain
-from plumber.discovery import PlumberClass
+from components.format import Chain
+from discovery import PlumberClass
 
 
 class BaseResolver(PlumberClass):

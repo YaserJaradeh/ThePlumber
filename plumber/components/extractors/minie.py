@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.extractors.base import BaseExtractor
-from plumber.components.format import Triple
+from components.extractors.base import BaseExtractor
+from components.format import Triple
 import requests
 
 

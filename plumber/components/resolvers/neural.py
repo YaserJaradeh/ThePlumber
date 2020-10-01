@@ -1,7 +1,7 @@
-from plumber.components.resolvers.base import BaseResolver
+from components.resolvers.base import BaseResolver
 # import spacy
 # import neuralcoref
-from plumber.components.format import Chain
+from components.format import Chain
 from typing import List
 import requests
 

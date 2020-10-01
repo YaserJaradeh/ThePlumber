@@ -1,5 +1,5 @@
 # ===== Clients =====
-from plumber.components.clients import OLLIEClient, StanfordClient
+from components.clients import OLLIEClient, StanfordClient
 # ===== Extractors =====
 from .extractors import BaseExtractor, StanfordBasedExtractor, DummyExtractor
 from .extractors import DependencyExtractor, OpenIEExtractor, KBPExtractor

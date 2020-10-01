@@ -1,8 +1,8 @@
-from plumber.components.linkers.base import BaseLinker
-from plumber.components.linkers.joint import FalconWikidataJointLinker, FalconDBpediaJointLinker
-from plumber.components.linkers.joint import EARLJointLinker
-from plumber.components.linkers.entity import TagMeEntityLinker
-from plumber.components.format import Pair
+from components.linkers.base import BaseLinker
+from components.linkers.joint import FalconWikidataJointLinker, FalconDBpediaJointLinker
+from components.linkers.joint import EARLJointLinker
+from components.linkers.entity import TagMeEntityLinker
+from components.format import Pair
 from typing import List, Tuple
 from elasticsearch import Elasticsearch
 

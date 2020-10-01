@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.extractors.base import OllieBasedExtractor
-from plumber.components.format import Triple
+from components.extractors.base import OllieBasedExtractor
+from components.format import Triple
 import nltk
 
 

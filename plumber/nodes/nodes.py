@@ -1,7 +1,7 @@
 from consecution import Node
-from plumber.components import BaseExtractor, BaseReader, BaseResolver, BaseWriter, Triple, Chain, Pair
-from plumber.components import BaseLinker
-from plumber.components import SPOTriple
+from components import BaseExtractor, BaseReader, BaseResolver, BaseWriter, Triple, Chain, Pair
+from components import BaseLinker
+from components import SPOTriple
 from typing import List, AnyStr
 import itertools
 import logging

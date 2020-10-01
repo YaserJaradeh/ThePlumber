@@ -1,6 +1,6 @@
 from .base import BaseLinker
 from .web import BaseWebLinker
-from plumber.components.format import Pair
+from components.format import Pair
 from typing import List
 
 

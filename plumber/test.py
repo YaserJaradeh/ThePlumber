@@ -1,7 +1,7 @@
-from plumber.components import StanfordClient, OLLIEClient
-from plumber.components import DependencyExtractor, OpenIEExtractor, KBPExtractor, OllieExtractor, POSExtractor
-from plumber.components import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
-from plumber.components import EARLJointLinker, FalconWikidataJointLinker
+from components import StanfordClient, OLLIEClient
+from components import DependencyExtractor, OpenIEExtractor, KBPExtractor, OllieExtractor, POSExtractor
+from components import StanfordCoreferenceResolver, SpacyNeuralCoreferenceResolver
+from components import EARLJointLinker, FalconWikidataJointLinker
 
 
 def test_extractors(text: str):
@@ -71,8 +71,7 @@ if __name__ == '__main__':
     scholarly communication remains exclusively document-based.
     In this form, scholarly knowledge is hard to process automatically.'''
     test = "Barack Obama was born in Hawaii. He was elected president in 2008."
-    #test_extractors(test)
-    # test_coref_resolvers(test)
+    test_extractors(test)
+    test_coref_resolvers(test)
     linker = FalconWikidataJointLinker()
     x = linker.get_links("Who is the wife of Barack Obama ?")
-

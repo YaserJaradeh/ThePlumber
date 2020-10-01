@@ -1,4 +1,4 @@
-from plumber.components.linkers.base import BaseSpacyANNLinker
+from components.linkers.base import BaseSpacyANNLinker
 
 
 class DBpediaSpacyANNJointLinker(BaseSpacyANNLinker):

@@ -1,6 +1,6 @@
 from typing import List
-from plumber.discovery import PlumberClass
-from plumber.components.format import Pair
+from discovery import PlumberClass
+from components.format import Pair
 
 
 class BaseLinker(PlumberClass):

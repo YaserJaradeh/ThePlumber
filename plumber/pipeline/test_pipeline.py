@@ -1,7 +1,7 @@
 from consecution import Node, Pipeline, GlobalState
-from plumber.nodes.nodes import ExtractionNode, ReadingNode, ResolutionNode, ProcessingNode, WritingNode, LinkingNode, \
+from nodes.nodes import ExtractionNode, ReadingNode, ResolutionNode, ProcessingNode, WritingNode, LinkingNode, \
     AggregationNode
-from plumber.components import StandardReader, OpenIEExtractor, StanfordClient, SpacyNeuralCoreferenceResolver, \
+from components import StandardReader, OpenIEExtractor, StanfordClient, SpacyNeuralCoreferenceResolver, \
     StandardWriter, EARLJointLinker, DependencyExtractor, FalconJointLinker, StanfordCoreferenceResolver
 
 

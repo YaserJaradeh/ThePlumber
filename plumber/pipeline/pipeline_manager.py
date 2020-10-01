@@ -1,14 +1,15 @@
 from functools import lru_cache
 from consecution import Pipeline, GlobalState
 from os.path import exists
-from plumber.components import *
-from plumber.user import *
-from plumber.discovery import get_classes_map
+from components import *
+from user import *
+from discovery import get_classes_map
 from typing import Dict, Union, List, Tuple
 from yaml import load
-from plumber.nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode, ExtractionNode, LinkingNode, \
+from nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode, ExtractionNode, LinkingNode, \
     WritingNode
 
+import sys 
 try:
     from yaml import CLoader as Loader
 except ImportError:
@@ -229,35 +230,41 @@ class PipelineParser:
             repo[node_type] = 1
             return f'{node_type} 1' + (f' ({postfix})' if postfix is not None else '')
 
-
 if __name__ == '__main__':
-    
-    pipe = PipelineParser.parse('config.yml')
-    pipe.consume([1])
-    
+
+    # pipe = PipelineParser.parse('config.yml')
+    # pipe = PipelineParser.parse('plumber\pipeline\config.yml')
+    # pipe.consume([1])
+
     #pipe = PipelineParser.parse('config.yml')
     #pipe.plot()
-    # resources = ["R12220", "R12223", "R12226", "R12231", "R12233", "R12235", "R12237", "R12241", "R12243", "R12245", "R12247", "R25005", "R36109", "R36114", "R36123", "R36138", "R36151", "R37001", "R37003", "R37006", "R37008"]
-    # config = {
-    #     "pipeline": {
-    #         "name": "test",
-    #         "components": {
-    #             "extractor": "user",
-    #             "linker": "dummy",
-    #             "resolver": "dummy",
-    #             "reader": "raw_file",
-    #             "writer": "file"
-    #         },
-    #         "parameters": {
-    #             "input_file": './text/R36138.txt',
-    #             "output_file": './text/R36138-triples.txt'
-    #         }
-    #     }
-    # }
-    # for resource in resources:
-    #     config["pipeline"]["parameters"]["input_file"] = f"./text/{resource}.txt"
-    #     config["pipeline"]["parameters"]["output_file"] = f"./text/{resource}-triples.txt"
-    #     pipeline, params = PipelineParser.create(config)
-    #     pipeline.consume([1])
-    #     PipelineParser.clean_up(params)
+
+    resources = ["R12220", "R12223", "R12226", "R12231", "R12233", \
+        "R12235", "R12237", "R12241", "R12243", "R12245", "R12247", "R25005", "R36109", \
+            "R36114", "R36123", "R36138", "R36151", "R37001", "R37003", "R37006", "R37008"]
+
+    resources = ["R36138"]
+
+    config = {
+        "pipeline": {
+            "name": "test",
+            "components": {
+                "extractor": "user",
+                "linker": "dummy",
+                "resolver": "dummy",
+                "reader": "raw_file",
+                "writer": "file"
+            },
+            "parameters": {
+                "input_file": 'plumber\data\R36138.txt',
+                "output_file": 'plumber\data\R36138-triples.txt'
+            }
+        }
+    }
+    for resource in resources:
+        config["pipeline"]["parameters"]["input_file"] = f"plumber/data/{resource}.txt"
+        config["pipeline"]["parameters"]["output_file"] = f"plumber/data/{resource}-triples.txt"
+        pipeline, params = PipelineParser.create(config)
+        pipeline.consume([1])
+        # PipelineParser.clean_up(params)
 

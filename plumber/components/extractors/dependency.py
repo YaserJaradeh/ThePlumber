@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.extractors.base import StanfordBasedExtractor
-from plumber.components.format import Triple
+from components.extractors.base import StanfordBasedExtractor
+from components.format import Triple
 from xml.dom.minidom import parseString
 import nltk
 

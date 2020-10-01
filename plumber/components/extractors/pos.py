@@ -1,7 +1,7 @@
 from typing import List
-from plumber.components.clients.stanford import StanfordClient
-from plumber.components.extractors.base import StanfordBasedExtractor
-from plumber.components.format import Triple
+from components.clients.stanford import StanfordClient
+from components.extractors.base import StanfordBasedExtractor
+from components.format import Triple
 import operator
 import nltk
 

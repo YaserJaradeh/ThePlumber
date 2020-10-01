@@ -1,6 +1,6 @@
 from typing import List
-from plumber.components.resolvers.base import BaseResolver
-from plumber.components.format import Chain
+from components.resolvers.base import BaseResolver
+from components.format import Chain
 import requests
 
 

@@ -1,5 +1,5 @@
-from plumber.components.linkers.base import BaseLinker
-from plumber.components.format import Pair
+from components.linkers.base import BaseLinker
+from components.format import Pair
 from typing import List
 from textrazor import TextRazor
 from random import randint
