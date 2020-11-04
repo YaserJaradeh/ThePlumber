@@ -53,7 +53,7 @@ def convert_ref_output_to_webnlg_xml(reference: str):
             modified_triple_set = SubElement(entry, 'modifiedtripleset')
             for triple in true:
                 mtriple = SubElement(modified_triple_set, 'mtriple')
-                mtriple.text = f"{triple['subject']} | {triple['property']} | {triple['object']}"
+                mtriple.text = f"{triple['subject'].strip()} | {triple['property'].strip()} | {triple['object'].strip()}"
         with open('reference.xml', 'w') as out_file:
             out_file.write(tostring(benchmark, 'unicode'))
             out_file.flush()
@@ -143,8 +143,8 @@ def binarize_classes(pred, true):
 
 if __name__ == '__main__':
     convert_all_pipelines_to_webnlg_xml(
-        '../results/dbp/plumber/WebNLG-2017-test/',
-        '../datasets/WebNLG/webnlg_v2_test.json',
+        '../results/dbp/plumber/WebNLG-2017-train/',
+        '../datasets/WebNLG/webnlg_v2_train.json',
         './xml'
     )
     # convert_pipeline_output_to_webnlg_xml(
