@@ -192,31 +192,35 @@ class ProcessingNode(Node):
 
     def process_links(self, triples: List[Triple]):
         new_triples = triples
-        if len(self.links) > 0:
-            so_spans = {}
-            p_spans = {}
-            for triple in triples:
-                # Add Subject spans
-                if triple.subject.surface_form.lower() not in so_spans:
-                    so_spans[triple.subject.surface_form.lower()] = [triple.subject]
-                else:
-                    so_spans[triple.subject.surface_form.lower()].append(triple.subject)
-                # Add object spans
-                if triple.object.surface_form.lower() not in so_spans:
-                    so_spans[triple.object.surface_form.lower()] = [triple.object]
-                else:
-                    so_spans[triple.object.surface_form.lower()].append(triple.object)
-                # add predicate spans
-                if triple.predicate.surface_form.lower() not in so_spans:
-                    p_spans[triple.predicate.surface_form.lower()] = [triple.predicate]
-                else:
-                    p_spans[triple.predicate.surface_form.lower()].append(triple.predicate)
-            for link in self.links:
-                if link.link_type == 'entity':
-                    spans = so_spans
-                else:
-                    spans = p_spans
-                if link.span.lower() in spans:
-                    for span in spans[link.span.lower()]:
-                        span.surface_form = link.mapping
-        return new_triples
+        try:
+            if len(self.links) > 0:
+                so_spans = {}
+                p_spans = {}
+                for triple in triples:
+                    # Add Subject spans
+                    if triple.subject.surface_form.lower() not in so_spans:
+                        so_spans[triple.subject.surface_form.lower()] = [triple.subject]
+                    else:
+                        so_spans[triple.subject.surface_form.lower()].append(triple.subject)
+                    # Add object spans
+                    if triple.object.surface_form.lower() not in so_spans:
+                        so_spans[triple.object.surface_form.lower()] = [triple.object]
+                    else:
+                        so_spans[triple.object.surface_form.lower()].append(triple.object)
+                    # add predicate spans
+                    if triple.predicate.surface_form.lower() not in so_spans:
+                        p_spans[triple.predicate.surface_form.lower()] = [triple.predicate]
+                    else:
+                        p_spans[triple.predicate.surface_form.lower()].append(triple.predicate)
+                for link in self.links:
+                    if link.link_type == 'entity':
+                        spans = so_spans
+                    else:
+                        spans = p_spans
+                    if link.span.lower() in spans:
+                        for span in spans[link.span.lower()]:
+                            span.surface_form = link.mapping
+        except Exception as exp:
+            raise exp
+        finally:
+            return new_triples
