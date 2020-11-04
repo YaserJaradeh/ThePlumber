@@ -8,7 +8,7 @@ HMTL_URL = 'http://localhost:11111/jmd/'
 
 
 class HMTLResolver(BaseResolver):
-    def __init__(self, name: str = 'Dummy Resolver', **kwargs):
+    def __init__(self, name: str = 'HMTL Resolver', **kwargs):
         super().__init__(name, **kwargs)
 
     def get_coreference_chains(self, text: str) -> List[Chain]:
