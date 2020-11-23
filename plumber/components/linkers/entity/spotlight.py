@@ -7,7 +7,8 @@ from typing import List
 class DBpediaSpotlightEntityLinker(BaseLinker, BaseWebLinker):
 
     def __init__(self, **kwargs):
-        kwargs['api_url'] = "http://localhost:33311/rest/annotate"
+        # kwargs['api_url'] = "http://localhost:33311/rest/annotate"
+        kwargs['api_url'] = "https://api.dbpedia-spotlight.org/en/annotate"
         BaseLinker.__init__(self, name="DBpedia Spotlight linker", **kwargs)
         BaseWebLinker.__init__(self, **kwargs)
 
