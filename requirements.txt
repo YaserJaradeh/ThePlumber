@@ -1,17 +1,14 @@
-numpy===1.15.0
-stanfordnlp===0.2.0
+numpy
+stanfordnlp
 wget
-torch===1.6.0
-torchvision===0.7.0
-consecution===0.2.0
-pandas===1.0.3
-nltk===3.5
-# need nltk.download('punkt')
-spacy===2.2.1
-# need python -m spacy download en
+torch
+torchvision
+consecution
+pandas
+nltk
+spacy
 spacy-ann-linker
-# neuralcoref===4.0
-hammock===0.2.4
+hammock
 pyyaml
 datefinder
 dateparser
@@ -19,7 +16,7 @@ tagme
 textrazor
 MeaningCloud-python
 elasticsearch
-tqdm==4.47.0
+tqdm
 requests
 gdown
 sparql-client

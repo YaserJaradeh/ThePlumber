@@ -26,6 +26,8 @@ RUN python -m spacy download en_core_web_lg && \
 ### Add the rest of the code
 ADD . /app
 
-### Running components and the server API
-#RUN chmod +x ./docker.sh
-CMD sh docker.sh && python ./plumber/api/api.py
+### Running components
+RUN sh setup_components.sh
+
+### Run the server's API
+CMD sh run_components.sh && python ./plumber/api/api.py

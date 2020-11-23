@@ -127,19 +127,23 @@ class WritingNode(Node):
     An output node (writing), end of a pipeline
     """
 
+    result = []
+
     def __init__(self, name: AnyStr, writer: BaseWriter, **kwargs):
         super().__init__(name, **kwargs)
         self.writer = writer
-        # self.kwargs = kwargs
 
     def process(self, item: List[SPOTriple]):
         # item here is the list of final triples
         # Get final triples
-        result = self.writer.write(triples=item)
+        self.result = self.writer.write(triples=item)
         # pass results to next component (No need this is the end)
         self.global_state.caller = self
         # Used in case the pipeline framework needs this
-        self.push(result)
+        # self.push(self.result)
+
+    def end(self):
+        return self.result
 
 
 class ProcessingNode(Node):

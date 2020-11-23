@@ -82,7 +82,7 @@ components = [
     ##################################################################################
     {
         "name": "Stanford",
-        "key": "stanford",
+        "key": "stanford_coreference",
         "task": "CR",
         "kg": None,
         "url": "https://www.aclweb.org/anthology/D10-1048/",

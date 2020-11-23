@@ -1,4 +1,4 @@
-from typing import List, AnyStr, Tuple
+from typing import List, AnyStr, Tuple, Dict
 
 
 class Span:
@@ -164,6 +164,13 @@ class SPOTriple:
             return f"{ids[0]}, {ids[1]}, {ids[2]}"
         except Exception as ex:
             return ""
+
+    def to_json(self) -> Dict:
+        return {
+            "subject": self.subject,
+            "predicate": self.predicate,
+            "object": self.object
+        }
 
     @staticmethod
     def from_triple(triple: Triple):
