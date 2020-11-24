@@ -19,7 +19,7 @@ class R0Extractor(BaseExtractor):
     ]
 
     def __init__(self, **kwargs):
-        super().__init__(name='Custom Extractor', **kwargs)
+        super().__init__(name='Covid-19 R0-Extractor', **kwargs)
         self.nlp = spacy.load('en')
         self.stemmer = SnowballStemmer(language='english')
         self.regex = r"\d+\.?\d*"
@@ -43,8 +43,6 @@ class R0Extractor(BaseExtractor):
         # get sentences
         doc = self.nlp(new_text)
         for sent in doc.sents:
-            print(sent.text)
-            print('=' * 10)
             # find sentences with a number in them
             matches = re.finditer(self.regex, sent.text, re.MULTILINE)
             # for matchNum, match in enumerate(matches, start=1):
@@ -52,7 +50,6 @@ class R0Extractor(BaseExtractor):
             #                                                                        start=match.start(),
             #                                                                        end=match.end(),
             #                                                                        match=match.group()))
-            # print('='*10)
             if bool(next(matches, False)):
                 result.append(self.check_against_rules(sent.text))
         return list(itertools.chain(*result))
@@ -68,7 +65,7 @@ class R0Extractor(BaseExtractor):
             if len(matches) > 0:
                 numbers = [match for match in re.finditer(self.regex, sent, re.MULTILINE)]
                 new_triple = Triple()
-                new_triple.add_subject('x', -1, -1, sent)
+                new_triple.add_subject('Contribution 1', -1, -1, sent)
                 new_triple.add_predicate(predicate, -1, -1, sent)
                 if isinstance(guide, int):
                     number = self.get_number_after_mention(matches[0], numbers, guide)
@@ -99,7 +96,7 @@ class R0Extractor(BaseExtractor):
         dates = search_dates(sent)
         if dates is not None and len(dates) == 2:
             new_triple = Triple()
-            new_triple.add_subject('x', -1, -1, sent)
+            new_triple.add_subject('Contribution 1', -1, -1, sent)
             new_triple.add_predicate('Study date', -1, -1, sent)
             obj = f'{dates[0][1].date()} - {dates[1][1].date()}'
             new_triple.add_object(obj, -1, -1, sent)
