@@ -6,6 +6,10 @@ services:
     image: jaradeh/plumber:framework
     ports:
       - '5000:5000'
+    depends_on:
+      - neuralcoref
+      - hmtl
+      - graphene
 
   neuralcoref:
     image: jaradeh/plumber:neuralcoref
