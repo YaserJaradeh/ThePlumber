@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+
+  plumber:
+    image: jaradeh/plumber:framework
+    ports:
+      - '5000:5000'
+
+  neuralcoref:
+    image: jaradeh/plumber:neuralcoref
+    ports:
+      - '22222:5000'
+
+  hmtl:
+    image: jaradeh/plumber:hmtl
+    ports:
+      - '11111:5000'
+
+  graphene-coreference:
+    depends_on:
+      - graphene-corenlp
+    image: "lambdacube/pycobalt:v1.1.1"
+    environment:
+      - PYCOBALT_CORENLP=http://corenlp:9000
+    expose:
+      - "5128"
+    links:
+      - graphene-corenlp
+
+
+  graphene-corenlp:
+    image: "lambdacube/corenlp:3.7.0"
+    expose:
+      - "9000"
+
+  graphene:
+    depends_on:
+      - graphene-coreference
+    image: jaradeh/plumber:graphene
+    ports:
+      - "8088:8080"
+    links:
+      - graphene-coreference
