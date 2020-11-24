@@ -116,10 +116,13 @@ class SPOTriple:
     This class is used in the output only, and does not contain any information other than the surface form of the SPO
     """
 
-    def __init__(self, subject: str, predicate: str, object: str):
+    def __init__(self, subject: str, predicate: str, object: str, subject_label: str = None, predicate_label: str = None, object_label: str = None):
         self.subject = subject
         self.predicate = predicate
         self.object = object
+        self.subject_label = subject_label
+        self.predicate_label = predicate_label
+        self.object_label = object_label
 
     def __str__(self) -> str:
         return f"<{self.subject}> <{self.predicate}> <{self.object}>"
@@ -167,14 +170,43 @@ class SPOTriple:
 
     def to_json(self) -> Dict:
         return {
-            "subject": self.subject,
-            "predicate": self.predicate,
-            "object": self.object
+            "subject": {
+                "uri": self.subject if self.subject.startswith("http") else None,
+                "label": self.subject_label
+            },
+            "predicate": {
+                "uri": self.predicate if self.predicate.startswith("http") else None,
+                "label": self.predicate_label
+            },
+            "object": {
+                "uri": self.object if self.object.startswith("http") else None,
+                "label": self.object_label
+            }
         }
 
     @staticmethod
+    def extract_labels(triple: Triple) -> Tuple[str, str, str]:
+        subject_label = triple.subject.surface_form
+        if not (triple.subject.start == -1 or triple.subject.end == -1):
+            subject_label = triple.subject.text[triple.subject.start: triple.subject.end]
+        #############################
+        predicate_label = triple.predicate.surface_form
+        if not (triple.predicate.start == -1 or triple.predicate.end == -1):
+            predicate_label = triple.predicate.text[triple.predicate.start: triple.predicate.end]
+        #############################
+        object_label = triple.object.surface_form
+        if not (triple.object.start == -1 or triple.object.end == -1):
+            object_label = triple.object.text[triple.object.start: triple.object.end]
+        return subject_label, predicate_label, object_label
+
+
+    @staticmethod
     def from_triple(triple: Triple):
-        return SPOTriple(triple.subject.surface_form, triple.predicate.surface_form, triple.object.surface_form)
+        subject_label, predicate_label, object_label = SPOTriple.extract_labels(triple)
+        return SPOTriple(
+            triple.subject.surface_form, triple.predicate.surface_form, triple.object.surface_form,
+            subject_label, predicate_label, object_label
+        )
 
 
 class Pair:
