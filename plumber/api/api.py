@@ -53,13 +53,16 @@ def get_pipelines():
 @app.route('/run', methods=['PUT', 'POST'])
 def run_pipeline():
     config = request.get_json(silent=False)
+    extractors = "dummy" if "extractor" not in config or config["extractor"] is None else config["extractor"]
+    resolvers = "dummy" if "resolver" not in config or config["resolver"] is None else config["resolver"]
+    linkers = "dummy" if "linker" not in config or config["linker"] is None else config["linker"]
     template = {
         "pipeline": {
             "name": "plumber pipeline",
             "components": {
-                "extractor": config["extractor"],
-                "linker": config["linker"],
-                "resolver": config["resolver"],
+                "extractor": extractors,
+                "linker": linkers,
+                "resolver": resolvers,
                 "reader": "feed",
                 "writer": "return"
             },
@@ -75,5 +78,7 @@ def run_pipeline():
 
 
 if __name__ == "__main__":
+    from plumber.main import plumber_logo
+    print(plumber_logo)
     app.run(host='0.0.0.0', port=5000)
 
