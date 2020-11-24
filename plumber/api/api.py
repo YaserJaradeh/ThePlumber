@@ -42,7 +42,7 @@ def index():
 
 @app.route('/components', methods=['GET'])
 def get_components():
-    return jsonify(info.components)
+    return jsonify([component.as_dict() for component in info.components])
 
 
 @app.route('/pipelines', methods=['GET'])
