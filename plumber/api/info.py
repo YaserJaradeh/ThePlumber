@@ -78,7 +78,7 @@ components = [
     ComponentDescription.create_cr(name="Stanford", key="stanford_coreference",
                                    url="https://www.aclweb.org/anthology/D10-1048/",
                                    desc="""a simple coreference architecture based on a sieve that applies tiers of deterministic coreference models one at a time from highest to lowest precision. Each tier builds on the previous tier’s entity cluster output. Further, Stanford Coreference resolver propagates global information by sharing attributes (e.g., gender and number) across mentions in the same cluster. This cautious sieve guarantees that stronger features are given precedence over weaker ones and that each decision is made using all of the information available at the time."""),
-    ComponentDescription.create_cr(name="NeuralCoref", key="spacyneural",
+    ComponentDescription.create_cr(name="NeuralCoref", key="spacy_neural_coreference",
                                    url="https://www.aclweb.org/anthology/D16-1245/",
                                    desc="""NeuralCoref applies reinforcement learning to directly optimize a neural mention-ranking model for coreference evaluation metrics. NeuralCoref employes two approaches: the REINFORCE policy gradient algorithm and a rewardrescaled max-margin objective"""),
     ComponentDescription.create_cr(name="HMTL", key="hmtl",

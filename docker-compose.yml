@@ -6,43 +6,63 @@ services:
     image: jaradeh/plumber:framework
     ports:
       - '5000:5000'
+    environment:
+      HMTL_ENDPOINT: 'http://hmtl:8000'
+      NEURAL_COREF_ENDPOINT: 'http://neuralcoref:8000'
+      GRAPHENE_ENDPOINT: 'http://graphene:8080'
     depends_on:
       - neuralcoref
       - hmtl
       - graphene
+    networks:
+      - plumber
 
   neuralcoref:
     image: jaradeh/plumber:neuralcoref
-    ports:
-      - '22222:5000'
+    expose:
+      - "8000"
+    networks:
+      - plumber
 
   hmtl:
     image: jaradeh/plumber:hmtl
-    ports:
-      - '11111:5000'
+    expose:
+      - "8000"
+    networks:
+      - plumber
 
   graphene-coreference:
     depends_on:
       - graphene-corenlp
     image: "lambdacube/pycobalt:v1.1.1"
     environment:
-      - PYCOBALT_CORENLP=http://corenlp:9000
+      PYCOBALT_CORENLP: 'http://graphene-corenlp:9000'
     expose:
       - "5128"
     links:
       - graphene-corenlp
+    networks:
+      - plumber
 
 
   graphene-corenlp:
     image: "lambdacube/corenlp:3.7.0"
     expose:
       - "9000"
+    networks:
+      - plumber
 
   graphene:
     depends_on:
       - graphene-coreference
     image: jaradeh/plumber:graphene
-    ports:
-      - "8088:8080"
+    expose:
+      - "8080"
     links:
       - graphene-coreference
+    networks:
+      - plumber
+
+networks:
+  plumber:
+

@@ -4,6 +4,7 @@ from plumber.components.resolvers.base import BaseResolver
 from plumber.components.format import Chain
 from typing import List
 import requests
+import os
 
 
 # class SpacyNeuralCoreferenceResolver(BaseResolver):
@@ -27,7 +28,7 @@ import requests
 #                 result.append(chain)
 #             return result
 
-SERVICE_URL = 'http://localhost:22222/'
+SERVICE_URL = f'{"http://localhost:22222" if os.environ["NEURAL_COREF_ENDPOINT"] is None else os.environ["NEURAL_COREF_ENDPOINT"]}/'
 
 
 class SpacyNeuralCoreferenceResolver(BaseResolver):

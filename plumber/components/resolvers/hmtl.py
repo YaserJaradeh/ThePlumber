@@ -2,9 +2,10 @@ from typing import List
 from plumber.components.resolvers.base import BaseResolver
 from plumber.components.format import Chain
 import requests
+import os
 
 
-HMTL_URL = 'http://localhost:11111/jmd/'
+HMTL_URL = f'{"http://localhost:11111" if os.environ["HMTL_ENDPOINT"] is None else os.environ["HMTL_ENDPOINT"]}/jmd/'
 
 
 class HMTLResolver(BaseResolver):

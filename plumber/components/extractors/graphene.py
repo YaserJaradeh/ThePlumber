@@ -2,8 +2,9 @@ from typing import List
 from plumber.components.extractors.base import BaseExtractor
 from plumber.components.format import Triple
 import requests
+import os
 
-GRAPHENE_URL = "http://localhost:8088/relationExtraction/text"
+GRAPHENE_URL = f'{"http://localhost:8088" if os.environ["GRAPHENE_ENDPOINT"] is None else os.environ["GRAPHENE_ENDPOINT"]}/relationExtraction/text'
 
 
 # Implementation of the API of the docker here: https://github.com/Lambda-3/Graphene
