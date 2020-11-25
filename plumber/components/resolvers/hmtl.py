@@ -5,7 +5,7 @@ import requests
 import os
 
 
-HMTL_URL = f'{"http://localhost:11111" if os.environ["HMTL_ENDPOINT"] is None else os.environ["HMTL_ENDPOINT"]}/jmd/'
+HMTL_URL = f'{"http://localhost:11111" if "HMTL_ENDPOINT" not in os.environ else os.environ["HMTL_ENDPOINT"]}/jmd/'
 
 
 class HMTLResolver(BaseResolver):

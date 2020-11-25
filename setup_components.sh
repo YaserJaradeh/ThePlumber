@@ -3,7 +3,9 @@
 CWD="$(pwd)"
 
 ## Pull and Build MinIE server
-git clone https://github.com/uma-pi1/minie.git
+gdown https://drive.google.com/uc?id=1jA8Uw7uV94_sPTxvpGyZzgXyDssBjbOj
+unzip minie.zip
+rm minie.zip
 cd minie
 mvn clean compile
 mvn assembly:assembly -DdescriptorId=jar-with-dependencies

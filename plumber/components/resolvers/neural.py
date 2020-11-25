@@ -28,7 +28,7 @@ import os
 #                 result.append(chain)
 #             return result
 
-SERVICE_URL = f'{"http://localhost:22222" if os.environ["NEURAL_COREF_ENDPOINT"] is None else os.environ["NEURAL_COREF_ENDPOINT"]}/'
+SERVICE_URL = f'{"http://localhost:22222" if "NEURAL_COREF_ENDPOINT" not in os.environ else os.environ["NEURAL_COREF_ENDPOINT"]}/'
 
 
 class SpacyNeuralCoreferenceResolver(BaseResolver):
