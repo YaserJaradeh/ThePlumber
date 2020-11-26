@@ -116,5 +116,5 @@ def get_and_check_parameters(config):
 if __name__ == "__main__":
     from plumber.main import plumber_logo
     print(plumber_logo)
-    app.run(host='0.0.0.0', port=5600)
+    app.run(host='0.0.0.0', port=5000)
 
