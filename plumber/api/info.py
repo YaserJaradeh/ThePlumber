@@ -146,7 +146,7 @@ class PipelineDescription:
 
 
 pipelines = [
-    PipelineDescription(name='Wikidata Test Pipeline', extractors=['Graphene'],
+    PipelineDescription(name='Wikidata Test Pipeline', extractors=['MinIE'],
                         linkers=['FalconWikidataJoint'], resolvers=['hmtl']),
     PipelineDescription(name='R0 Extraction Pipeline', extractors=['r0']),
 ]
