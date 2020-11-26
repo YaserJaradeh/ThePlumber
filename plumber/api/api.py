@@ -56,6 +56,12 @@ def run_pipeline():
     extractors = "dummy" if "extractor" not in config or config["extractor"] is None else config["extractor"]
     resolvers = "dummy" if "resolver" not in config or config["resolver"] is None else config["resolver"]
     linkers = "dummy" if "linker" not in config or config["linker"] is None else config["linker"]
+    if isinstance(extractors, list):
+        extractors = "dummy" if len(extractors) == 0 else extractors
+    if isinstance(resolvers, list):
+        resolvers = "dummy" if len(resolvers) == 0 else resolvers
+    if isinstance(linkers, list):
+        linkers = "dummy" if len(linkers) == 0 else linkers
     template = {
         "pipeline": {
             "name": "plumber pipeline",
@@ -80,5 +86,5 @@ def run_pipeline():
 if __name__ == "__main__":
     from plumber.main import plumber_logo
     print(plumber_logo)
-    app.run(host='0.0.0.0', port=5600)
+    app.run(host='0.0.0.0', port=5000)
 
