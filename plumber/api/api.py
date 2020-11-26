@@ -47,7 +47,7 @@ def get_components():
 
 @app.route('/pipelines', methods=['GET'])
 def get_pipelines():
-    return jsonify(info.pipelines)
+    return jsonify([pipeline.as_dict() for pipeline in info.pipelines])
 
 
 @app.route('/run', methods=['PUT', 'POST'])
@@ -80,5 +80,5 @@ def run_pipeline():
 if __name__ == "__main__":
     from plumber.main import plumber_logo
     print(plumber_logo)
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5600)
 

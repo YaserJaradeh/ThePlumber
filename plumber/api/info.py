@@ -1,8 +1,7 @@
-from typing import Dict
+from typing import Dict, List
 
 
 class ComponentDescription:
-
     name: str
     key: str
     task: str
@@ -11,7 +10,8 @@ class ComponentDescription:
     icon: str = None
     desc: str = None
 
-    def __init__(self, name: str, task: str, key: str = None, kg: str = None, url: str = None, icon: str = None, desc: str = None):
+    def __init__(self, name: str, task: str, key: str = None, kg: str = None, url: str = None, icon: str = None,
+                 desc: str = None):
         self.name = name
         self.task = task
         self.key = name if key is None else key
@@ -122,6 +122,31 @@ components = [
                                       desc="""The second iteration of the joint entity and relation linking tool, this iteration is much faster, and works on Wikidata knowledge graph."""),
 ]
 
-pipelines = [
 
+class PipelineDescription:
+    name: str
+    extractors: List[str]
+    linkers: List[str]
+    resolvers: List[str]
+
+    def __init__(
+            self,
+            name='pipeline',
+            extractors: List[str] = None,
+            linkers: List[str] = None,
+            resolvers: List[str] = None
+    ):
+        self.extractors = extractors
+        self.linkers = linkers
+        self.resolvers = resolvers
+        self.name = name
+
+    def as_dict(self) -> Dict:
+        return vars(self)
+
+
+pipelines = [
+    PipelineDescription(name='Wikidata Test Pipeline', extractors=['Graphene'],
+                        linkers=['FalconWikidataJoint'], resolvers=['hmtl']),
+    PipelineDescription(name='R0 Extraction Pipeline', extractors=['r0']),
 ]
