@@ -21,7 +21,7 @@ kwargs['stanford_client'] = stan
 kwargs['ollie_client'] = ollie
 
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET'], strict_slashes=False)
 def index():
     import urllib.parse
     output = []
@@ -41,17 +41,17 @@ def index():
     return jsonify(sorted(output))
 
 
-@app.route('/components', methods=['GET'])
+@app.route('/components', methods=['GET'], strict_slashes=False)
 def get_components():
     return jsonify([component.as_dict() for component in info.components])
 
 
-@app.route('/pipelines', methods=['GET'])
+@app.route('/pipelines', methods=['GET'], strict_slashes=False)
 def get_pipelines():
     return jsonify([pipeline.as_dict() for pipeline in info.pipelines])
 
 
-@app.route('/run', methods=['PUT', 'POST'])
+@app.route('/run', methods=['PUT', 'POST'], strict_slashes=False)
 def run_pipeline():
     config = request.get_json(silent=False)
     error, extractors, resolvers, linkers = get_and_check_parameters(config)
