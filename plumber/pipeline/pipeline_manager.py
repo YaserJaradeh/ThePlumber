@@ -153,7 +153,7 @@ class PipelineParser:
         reader_node = ReadingNode(PipelineParser.__get_name(names_repo, 'reader', components['reader']),
                                   PipelineParser.__lookup_class_name(components['reader'], 'reader')[0](**kwargs))
         main_node = ProcessingNode(PipelineParser.__get_name(names_repo, 'Processor'))
-        pipe = Pipeline(reader_node, global_state=GlobalState(triples=[], caller=None))
+        pipe = Pipeline(reader_node, global_state=GlobalState(triples=[], chains=[], links=[], caller=None))
         ####################################
         resolvers = components['resolver']
         if isinstance(resolvers, list):
