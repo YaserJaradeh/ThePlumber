@@ -5,14 +5,16 @@ import sys
 sys.path.append(os.getcwd())
 sys.path.append(f'{os.getcwd()}/plumber')
 ####################################
-from flask import Flask, jsonify, url_for, request, abort
+from flask import Flask, jsonify, url_for, request
+from flask_cors import CORS, cross_origin
 from plumber.api import info
 from plumber.pipeline.pipeline_manager import PipelineParser
 from plumber.components import StanfordClient, OLLIEClient
-from typing import Union, List, Tuple
+from typing import Union, List
 
 
 app = Flask(__name__)
+cors = CORS(app)
 
 kwargs = {}
 stan = StanfordClient()
@@ -22,6 +24,7 @@ kwargs['ollie_client'] = ollie
 
 
 @app.route('/', methods=['GET'], strict_slashes=False)
+@cross_origin()
 def index():
     import urllib.parse
     output = []
@@ -42,16 +45,19 @@ def index():
 
 
 @app.route('/components', methods=['GET'], strict_slashes=False)
+@cross_origin()
 def get_components():
     return jsonify([component.as_dict() for component in info.components])
 
 
 @app.route('/pipelines', methods=['GET'], strict_slashes=False)
+@cross_origin()
 def get_pipelines():
     return jsonify([pipeline.as_dict() for pipeline in info.pipelines])
 
 
 @app.route('/run', methods=['PUT', 'POST'], strict_slashes=False)
+@cross_origin()
 def run_pipeline():
     config = request.get_json(silent=False)
     error, extractors, resolvers, linkers = get_and_check_parameters(config)
