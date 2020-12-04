@@ -13,8 +13,8 @@ class AmbiverseEntityLinker(BaseLinker):
         BaseLinker.__init__(self, name="Ambiverse entity linker", **kwargs)
 
     def get_links(self, text: str) -> List[Pair]:
-
-        payload = "{\"docId\": \"doc1\", \"text\": \""+text+"\", \"extractConcepts\": \"true\", \"language\": \"en\" }"
+        payload = self.prepare_json_request({"docId": "doc1", "text": text, "extractConcepts": True, "language": "en"})
+        # payload = "{\"docId\": \"doc1\", \"text\": \""+text+"\", \"extractConcepts\": \"true\", \"language\": \"en\" }"
         headers = {
             'accept': 'application/json',
             'content-type': 'application/json'

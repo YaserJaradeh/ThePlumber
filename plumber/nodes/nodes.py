@@ -28,6 +28,69 @@ class AggregationNode(Node):
         self.push(self.results)
 
 
+class TriplesAggregationNode(AggregationNode):
+    """
+    A triple aggregation node, to collect the triples in the global state
+    """
+
+    def __init__(self, name: AnyStr, **kwargs):
+        super().__init__(name, **kwargs)
+
+    def begin(self):
+        self.results = None
+
+    def process(self, item):
+        if self.results is None:
+            self.results = type(item)()
+        self.results = self.results + item
+
+    def end(self):
+        self.global_state.triples = self.results
+        self.push(self.results)
+
+
+class ChainsAggregationNode(AggregationNode):
+    """
+    A chain aggregation node, to collect the chains in the global state
+    """
+
+    def __init__(self, name: AnyStr, **kwargs):
+        super().__init__(name, **kwargs)
+
+    def begin(self):
+        self.results = None
+
+    def process(self, item):
+        if self.results is None:
+            self.results = type(item)()
+        self.results = self.results + item
+
+    def end(self):
+        self.global_state.chains = self.results
+        self.push(self.results)
+
+
+class LinksAggregationNode(AggregationNode):
+    """
+    A link aggregation node, to collect the links in the global state
+    """
+
+    def __init__(self, name: AnyStr, **kwargs):
+        super().__init__(name, **kwargs)
+
+    def begin(self):
+        self.results = None
+
+    def process(self, item):
+        if self.results is None:
+            self.results = type(item)()
+        self.results = self.results + item
+
+    def end(self):
+        self.global_state.links = self.results
+        self.push(self.results)
+
+
 class ReadingNode(Node):
     """
     A reader node, should be first node in a pipeline
@@ -63,13 +126,14 @@ class ExtractionNode(Node):
         except Exception as exp:
             result = []
             logging.error('Error at %s', f'Extraction Node {self.name}', exc_info=exp)
-        if len(self.global_state.triples) == 0:
-            self.global_state.triples = result
-        else:
-            self.global_state.triples += result
+        # if len(self.global_state.triples) == 0:
+        #     self.global_state.triples = result
+        # else:
+        #     self.global_state.triples += result
         # pass results to next component
         self.global_state.caller = self
-        self.push([t.as_text for t in result])
+        # self.push([t.as_text for t in result])
+        self.push(result)
 
 
 class ResolutionNode(Node):
@@ -107,12 +171,12 @@ class LinkingNode(Node):
     def begin(self):
         self.results = []
 
-    def process(self, item: List[AnyStr]):
+    def process(self, item: List[Triple]):
         # item here is the text (str)
         # Get all links from linker
         try:
             for triple in item:
-                self.results.append(self.linker.get_links(triple))
+                self.results.append(self.linker.get_links(triple.as_text))
         except Exception as exp:
             self.results.append([])
             logging.error('Error at %s', f'Linking Node {self.name}', exc_info=exp)
@@ -162,14 +226,17 @@ class ProcessingNode(Node):
         self.chains = []
 
     def process(self, item):
-        caller = self.global_state.caller
-        if isinstance(caller, ResolutionNode):
-            self.chains = item
-        if isinstance(caller, LinkingNode):
-            self.links = item
+        # caller = self.global_state.caller
+        # if isinstance(caller, ResolutionNode):
+        #     self.chains = item
+        # if isinstance(caller, LinkingNode):
+        #     self.links = item
+        pass
 
     def end(self):
         self.triples = self.global_state.triples
+        self.links = self.global_state.links
+        self.chains = self.global_state.chains
         self.global_state.caller = self
         final_result = self.process_data()
         self.push(final_result)

@@ -14,7 +14,8 @@ class GrapheneExtractor(BaseExtractor):
         super().__init__(name='Graphene extractor', **kwargs)
 
     def get_triples(self, text) -> List[Triple]:
-        payload = "{\"text\": \""+text+"\", \"doCoreference\": \"true\", \"isolateSentences\": \"false\", \"format\": \"DEFAULT\"}"
+        # payload = "{\"text\": \""+text+"\", \"doCoreference\": \"true\", \"isolateSentences\": \"false\", \"format\": \"DEFAULT\"}"
+        payload = self.prepare_json_request({"text": text, "doCoreference": True, "isolateSentences": False, "format": "DEFAULT"})
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'

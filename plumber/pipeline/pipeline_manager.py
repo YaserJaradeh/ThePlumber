@@ -6,8 +6,9 @@ from plumber.user import *
 from plumber.discovery import get_classes_map
 from typing import Dict, Union, List, Tuple
 from yaml import load
-from plumber.nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode, ExtractionNode, LinkingNode, \
-    WritingNode
+from plumber.nodes import ReadingNode, ResolutionNode, AggregationNode, ProcessingNode
+from plumber.nodes import ExtractionNode, LinkingNode, WritingNode
+from plumber.nodes import LinksAggregationNode, ChainsAggregationNode, TriplesAggregationNode
 
 try:
     from yaml import CLoader as Loader
@@ -156,7 +157,7 @@ class PipelineParser:
         ####################################
         resolvers = components['resolver']
         if isinstance(resolvers, list):
-            collector_node = AggregationNode(PipelineParser.__get_name(names_repo, 'resolvers collector'))
+            collector_node = ChainsAggregationNode(PipelineParser.__get_name(names_repo, 'resolvers collector'))
             collector_node.add_downstream(main_node)
             types = PipelineParser.__lookup_class_name(components['resolver'], 'resolver')
             for resolver_type in types:
@@ -174,7 +175,7 @@ class PipelineParser:
         extractors = components['extractor']
         last_extractor = None
         if isinstance(extractors, list):
-            collector_node = AggregationNode(PipelineParser.__get_name(names_repo, 'extractors collector'))
+            collector_node = TriplesAggregationNode(PipelineParser.__get_name(names_repo, 'extractors collector'))
             types = PipelineParser.__lookup_class_name(components['extractor'], 'extractor')
             for extractor_type in types:
                 extractor_node = ExtractionNode(PipelineParser.__get_name(names_repo, 'extractor', extractor_type[1]),
@@ -192,7 +193,7 @@ class PipelineParser:
         linkers = components['linker']
         last_linker = None
         if isinstance(linkers, list):
-            collector_node = AggregationNode(PipelineParser.__get_name(names_repo, 'linkers collector'))
+            collector_node = LinksAggregationNode(PipelineParser.__get_name(names_repo, 'linkers collector'))
             types = PipelineParser.__lookup_class_name(components['linker'], 'linker')
             for linker_type in types:
                 linker_node = LinkingNode(PipelineParser.__get_name(names_repo, 'linker', linker_type[1]),

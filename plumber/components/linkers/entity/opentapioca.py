@@ -13,7 +13,8 @@ class OpenTapiocaEntityLinker(BaseLinker, BaseWebLinker):
         BaseWebLinker.__init__(self, **kwargs)
 
     def get_links(self, text: str) -> List[Pair]:
-        result = self.client.POST(data={'query': text}).json()
+        payload = self.prepare_json_request({'query': text})
+        result = self.client.POST(data=payload).json()
         return [
             Pair(f"http://www.wikidata.org/entity/{entity['best_qid']}", text[entity['start']:entity['end']], 'entity')
             for entity in result['annotations'] if entity['best_qid'] is not None] \
