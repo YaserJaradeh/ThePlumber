@@ -17,6 +17,7 @@ from .linkers import EARLJointLinker, TextRazorEntityLinker, TextRazorDBpediaLin
 from .linkers import MeaningCloudEntityLinker, ESFalconDBpediaJointLinker, ESFalconWikidataJointLinker
 from .linkers import ESEarlDBpediaJointLinker, ESEarlWikidataJointLinker
 from .linkers import ESTagMeDBpediaJointLinker, ESTagMeWikidataJointLinker
+from .linkers import ORKGSpacyANNLinker
 # ===== Readers =====
 from .readers import BaseReader, StandardReader, RawFileReader, FeedReader
 # ===== Writers =====

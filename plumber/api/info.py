@@ -120,6 +120,8 @@ components = [
                                       url="https://labs.tib.eu/falcon/falcon2/",
                                       icon="https://labs.tib.eu/falcon/static/img/logo2.jpg",
                                       desc="""The second iteration of the joint entity and relation linking tool, this iteration is much faster, and works on Wikidata knowledge graph."""),
+    ComponentDescription.create_el_rl(name="ORKG ANN Linker", key="ORKGSpacyANN", kg="ORKG",
+                                      desc="""An Entity and Relation linking tool, that is built by the awesome team of the ORKG to link mentions to the ORKG graph"""),
 ]
 
 

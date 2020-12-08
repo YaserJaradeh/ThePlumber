@@ -10,10 +10,12 @@ services:
       HMTL_ENDPOINT: 'http://hmtl:8000'
       NEURAL_COREF_ENDPOINT: 'http://neuralcoref:8000'
       GRAPHENE_ENDPOINT: 'http://graphene:8080'
+      ORKG_ANN_ENDPOINT: 'http://orkg-ann-linker:5000'
     depends_on:
       - neuralcoref
       - hmtl
       - graphene
+      - orkg-ann-linker
     networks:
       - plumber
 
@@ -28,6 +30,13 @@ services:
     image: jaradeh/plumber:hmtl
     expose:
       - "8000"
+    networks:
+      - plumber
+
+  orkg-ann-linker:
+    image: jaradeh/plumber:orkg-ann-linker
+    expose:
+      - "5000"
     networks:
       - plumber
 
