@@ -37,8 +37,7 @@ class SpacyNeuralCoreferenceResolver(BaseResolver):
         super().__init__(name='Spacy Neural Coreference Resolver', **kwargs)
 
     def get_coreference_chains(self, text) -> List[Chain]:
-
-        payload = "{\"text\": \"" + text + "\"}"
+        payload = self.prepare_json_request({"text": text})
         headers = {
             'Content-Type': 'application/json'
         }

@@ -13,7 +13,6 @@ class HMTLResolver(BaseResolver):
         super().__init__(name, **kwargs)
 
     def get_coreference_chains(self, text: str) -> List[Chain]:
-        # payload = "{\"text\": \""+text+"\"}".replace('\n', ' ')
         payload = self.prepare_json_request({"text": text})
 
         headers = {
