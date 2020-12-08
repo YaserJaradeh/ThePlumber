@@ -2,9 +2,10 @@ from plumber.components.linkers.base import BaseLinker, BaseWebLinker
 from plumber.components.format import Pair
 from typing import List
 import os
+import re
 
 
-ENDPOINT_URL = f'{"http://localhost:11111" if "ORKG_ANN_ENDPOINT" not in os.environ else os.environ["ORKG_ANN_ENDPOINT"]}/'
+ENDPOINT_URL = f'{"http://localhost:11111" if "ORKG_ANN_ENDPOINT" not in os.environ else os.environ["ORKG_ANN_ENDPOINT"]}'
 
 
 class ORKGSpacyANNLinker(BaseLinker, BaseWebLinker):
@@ -18,13 +19,15 @@ class ORKGSpacyANNLinker(BaseLinker, BaseWebLinker):
         result = self.client.link.POST(json={"text": text}).json()
         links = []
         for entry in result:
-            if entry['type'] in ['ORKG-REL']:
-                link_type = 'relation'
-            elif entry['type'] in ['ORKG-ENT']:
-                link_type = 'entity'
-            else:
+            if entry['uri'] is None or len(entry['uri']) == 0:
                 continue
-            links.append(Pair(entry['uri'], entry['text'], link_type))
+            if re.search(r"R\d+", entry['uri']) is not None:
+                link_type = 'entity'
+                uri = f"https://www.orkg.org/orkg/resource/{entry['uri']}"
+            else:
+                link_type = 'relation'
+                uri = f"https://www.orkg.org/orkg/predicate/{entry['uri']}"
+            links.append(Pair(uri, entry['text'], link_type))
         return links
 
 

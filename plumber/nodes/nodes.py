@@ -279,7 +279,7 @@ class ProcessingNode(Node):
                     else:
                         so_spans[triple.object.surface_form.lower()].append(triple.object)
                     # add predicate spans
-                    if triple.predicate.surface_form.lower() not in so_spans:
+                    if triple.predicate.surface_form.lower() not in p_spans:
                         p_spans[triple.predicate.surface_form.lower()] = [triple.predicate]
                     else:
                         p_spans[triple.predicate.surface_form.lower()].append(triple.predicate)
@@ -290,7 +290,8 @@ class ProcessingNode(Node):
                         spans = p_spans
                     if link.span.lower() in spans:
                         for span in spans[link.span.lower()]:
-                            span.surface_form = link.mapping
+                            span.mapping = link.mapping
+                            # span.surface_form = link.mapping
         except Exception as exp:
             raise exp
         finally:

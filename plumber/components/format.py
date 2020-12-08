@@ -9,6 +9,7 @@ class Span:
     end: int = None
     surface_form: AnyStr = None
     text: AnyStr = None
+    mapping: AnyStr = None
 
     def __init__(self, start: int, end: int, surface_form: AnyStr, text: AnyStr):
         self.start = start
@@ -171,15 +172,15 @@ class SPOTriple:
     def to_json(self) -> Dict:
         return {
             "subject": {
-                "uri": self.subject if self.subject.startswith("http") else None,
+                "uri": self.subject,
                 "label": self.subject_label
             },
             "predicate": {
-                "uri": self.predicate if self.predicate.startswith("http") else None,
+                "uri": self.predicate,
                 "label": self.predicate_label
             },
             "object": {
-                "uri": self.object if self.object.startswith("http") else None,
+                "uri": self.object,
                 "label": self.object_label
             }
         }
@@ -199,13 +200,12 @@ class SPOTriple:
             object_label = triple.object.text[triple.object.start: triple.object.end]
         return subject_label, predicate_label, object_label
 
-
     @staticmethod
     def from_triple(triple: Triple):
-        subject_label, predicate_label, object_label = SPOTriple.extract_labels(triple)
+        # subject_label, predicate_label, object_label = SPOTriple.extract_labels(triple)
         return SPOTriple(
-            triple.subject.surface_form, triple.predicate.surface_form, triple.object.surface_form,
-            subject_label, predicate_label, object_label
+            triple.subject.mapping, triple.predicate.mapping, triple.object.mapping,
+            triple.subject.surface_form, triple.predicate.surface_form, triple.object.surface_form
         )
 
 
