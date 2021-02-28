@@ -158,16 +158,18 @@ You can see that each object is a triple, and each span has a “Label” and a 
 
 And, .... long story short, this is it. Happy plumbing!!
 
-![][/images/funny.png]
+![](/images/funny.PNG)
 
-_Note_ details about pipline selection will be added soon with the model.
+_Note_: details about pipline selection will be added soon with the model.
 
 ## User Interface
 The code for the user interface is part of the ORKG frontend code [Gitlab repo](https://gitlab.com/TIBHannover/orkg/orkg-frontend/-/tree/393-implement-plumber-pipeline-in-frontend)
 
-It looks like this:
+Parts of it looks like this:
 
-![][/images/UI.png]
+![](/images/UI.png)
+
+Check the demonstration video for more details
 
 
 ## Citation
