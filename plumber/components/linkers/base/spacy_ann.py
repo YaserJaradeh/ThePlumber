@@ -7,9 +7,14 @@ from typing import List
 class BaseSpacyANNLinker(BaseLinker, BaseWebLinker):
 
     allowed_relation_types = []
+    exclusion_types = []
 
-    def __init__(self, url: str, allowed_relation_types, **kwargs):
+    def __init__(self, url: str, allowed_relation_types, exclusion_types=None, **kwargs):
         self.allowed_relation_types = allowed_relation_types
+        if exclusion_types is None:
+            self.exclusion_types = []
+        else:
+            self.exclusion_types = exclusion_types
         kwargs['api_url'] = url
         BaseLinker.__init__(self, name="Base Spacy ANN Linker", **kwargs)
         BaseWebLinker.__init__(self, **kwargs)

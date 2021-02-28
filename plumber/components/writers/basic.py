@@ -23,3 +23,12 @@ class FileWriter(BaseWriter):
         file_path = self.kwargs['output_file']
         with open(file_path, 'w') as out_file:
             out_file.write('\n'.join([triple.__str__() for triple in triples]))
+
+
+class ReturnWriter(BaseWriter):
+
+    def __init__(self, **kwargs):
+        super().__init__(name='Return output as string', **kwargs)
+
+    def write(self, triples: List[SPOTriple]):
+        return [triple.to_json() for triple in triples]

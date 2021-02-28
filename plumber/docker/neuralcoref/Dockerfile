@@ -1,4 +1,4 @@
-FROM python:buster
+FROM python:3.7-buster
 LABEL maintainer="Yaser Jaradeh <yaser.jaradeh@tib.eu>"
 
 RUN \

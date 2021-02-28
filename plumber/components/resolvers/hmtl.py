@@ -2,9 +2,10 @@ from typing import List
 from plumber.components.resolvers.base import BaseResolver
 from plumber.components.format import Chain
 import requests
+import os
 
 
-HMTL_URL = 'http://localhost:11111/jmd/'
+HMTL_URL = f'{"http://localhost:8000" if "HMTL_ENDPOINT" not in os.environ else os.environ["HMTL_ENDPOINT"]}/jmd/'
 
 
 class HMTLResolver(BaseResolver):
@@ -12,7 +13,8 @@ class HMTLResolver(BaseResolver):
         super().__init__(name, **kwargs)
 
     def get_coreference_chains(self, text: str) -> List[Chain]:
-        payload = "{\"text\": \""+text+"\"}"
+        payload = self.prepare_json_request({"text": text})
+
         headers = {
             'accept': 'application/json',
             'content-type': 'application/json'

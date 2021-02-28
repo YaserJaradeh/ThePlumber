@@ -1,0 +1,77 @@
+version: '3.7'
+
+services:
+
+  plumber:
+    image: jaradeh/plumber:framework
+    ports:
+      - '5000:5000'
+    environment:
+      HMTL_ENDPOINT: 'http://hmtl:8000'
+      NEURAL_COREF_ENDPOINT: 'http://neuralcoref:8000'
+      GRAPHENE_ENDPOINT: 'http://graphene:8080'
+      ORKG_ANN_ENDPOINT: 'http://orkg-ann-linker:5000'
+    depends_on:
+      - neuralcoref
+      - hmtl
+      - graphene
+      - orkg-ann-linker
+    networks:
+      - plumber
+
+  neuralcoref:
+    image: jaradeh/plumber:neuralcoref
+    expose:
+      - "8000"
+    networks:
+      - plumber
+
+  hmtl:
+    image: jaradeh/plumber:hmtl
+    expose:
+      - "8000"
+    networks:
+      - plumber
+
+  orkg-ann-linker:
+    image: jaradeh/plumber:orkg-ann-linker
+    expose:
+      - "5000"
+    networks:
+      - plumber
+
+  graphene-coreference:
+    depends_on:
+      - graphene-corenlp
+    image: "lambdacube/pycobalt:v1.1.1"
+    environment:
+      PYCOBALT_CORENLP: 'http://graphene-corenlp:9000'
+    expose:
+      - "5128"
+    links:
+      - graphene-corenlp
+    networks:
+      - plumber
+
+
+  graphene-corenlp:
+    image: "lambdacube/corenlp:3.7.0"
+    expose:
+      - "9000"
+    networks:
+      - plumber
+
+  graphene:
+    depends_on:
+      - graphene-coreference
+    image: jaradeh/plumber:graphene
+    expose:
+      - "8080"
+    links:
+      - graphene-coreference
+    networks:
+      - plumber
+
+networks:
+  plumber:
+

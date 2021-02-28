@@ -1,1 +1,1 @@
-from .custom import UserExtractor
+from .custom import R0Extractor

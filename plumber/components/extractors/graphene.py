@@ -2,8 +2,9 @@ from typing import List
 from plumber.components.extractors.base import BaseExtractor
 from plumber.components.format import Triple
 import requests
+import os
 
-GRAPHENE_URL = "http://localhost:8088/relationExtraction/text"
+GRAPHENE_URL = f'{"http://localhost:8088" if "GRAPHENE_ENDPOINT" not in os.environ else os.environ["GRAPHENE_ENDPOINT"]}/relationExtraction/text'
 
 
 # Implementation of the API of the docker here: https://github.com/Lambda-3/Graphene
@@ -13,7 +14,8 @@ class GrapheneExtractor(BaseExtractor):
         super().__init__(name='Graphene extractor', **kwargs)
 
     def get_triples(self, text) -> List[Triple]:
-        payload = "{\"text\": \""+text+"\", \"doCoreference\": \"true\", \"isolateSentences\": \"false\", \"format\": \"DEFAULT\"}"
+        # payload = "{\"text\": \""+text+"\", \"doCoreference\": \"true\", \"isolateSentences\": \"false\", \"format\": \"DEFAULT\"}"
+        payload = self.prepare_json_request({"text": text, "doCoreference": True, "isolateSentences": False, "format": "DEFAULT"})
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
