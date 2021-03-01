@@ -125,7 +125,7 @@ curl --location --request PUT 'awesome-plumber-host:5000/run' \
 
 Wow! This is different than before, as you might say. Well it is.
 
-You need to make a “POST” or a “PUT” HTTP call to the /run endpoint and pass the payload as shown above.
+You need to make a `POST` or a `PUT` HTTP call to the /run endpoint and pass the payload as shown above.
 
 The payload has four attributes (“extractor”, “linker”, “resolver”, and “input_text”)
 
