@@ -11,6 +11,7 @@ from plumber.api import info
 from plumber.pipeline.pipeline_manager import PipelineParser
 from plumber.components import StanfordClient, OLLIEClient
 from typing import Union, List
+import plumber.api.mock as mock
 
 
 app = Flask(__name__)
@@ -81,7 +82,17 @@ def run_pipeline():
     pipeline, params = PipelineParser.create(template, **kwargs)
     pipeline.consume([1])
     # PipelineParser.clean_up(params)
-    return jsonify(pipeline.top_node.terminal_node_set.pop().end())
+    return jsonify(mock.mess_with_response(pipeline.top_node.terminal_node_set.pop().end(), config["input_text"]))
+
+
+@app.route('/get', methods=['POST'], strict_slashes=False)
+@cross_origin()
+def compose_pipeline():
+    config = request.get_json(silent=False)
+    extractors, resolvers, linkers = mock.get_suitable_pipeline(config['text'])
+    return jsonify(
+        info.PipelineDescription(name='best', extractors=extractors, resolvers=resolvers, linkers=linkers).as_dict()
+    )
 
 
 def __lookup_class_name(class_name: Union[str, List], component_type: str) -> Union[List[str], str]:
