@@ -172,7 +172,7 @@ Parts of it looks like this:
 Check the demonstration video for more details
 
 
-<!--## Citation
+## Citation
 If you feel this work is helpful please cite the the main publication of Plumber (ICWE 2021 citation will be updated when available)
 ```bib
 @inproceedings{plumber-preprint,
@@ -186,4 +186,3 @@ If you feel this work is helpful please cite the the main publication of Plumber
     journal= "arXiv preprint arXiv:2102.10966",
 }
 ```
---!>
