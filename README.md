@@ -173,7 +173,7 @@ Check the demonstration video for more details
 ## Citation
 If you feel this work is helpful please cite the the main publication of Plumber
 ```bib
-@InProceedings{plumber-icwe,
+@inproceedings{plumber,
     author="Jaradeh, Mohamad Yaser
     and Singh, Kuldeep
     and Stocker, Markus
@@ -189,6 +189,7 @@ If you feel this work is helpful please cite the the main publication of Plumber
     publisher="Springer International Publishing",
     address="Cham",
     pages="240--254",
-    isbn="978-3-030-74296-6"
+    isbn="978-3-030-74296-6",
+    doi="10.1007/978-3-030-74296-6\_19"
 }
 ```
