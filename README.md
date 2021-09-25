@@ -160,12 +160,10 @@ And, .... long story short, this is it. Happy plumbing!!
 
 ![](/images/funny.PNG)
 
-_Note_: details about pipline selection will be added soon with the model.
-
 ## User Interface
 The code for the user interface is part of the ORKG frontend code [Gitlab repo](https://gitlab.com/TIBHannover/orkg/orkg-frontend/-/tree/393-implement-plumber-pipeline-in-frontend)
 
-Parts of it looks like this:
+Plumber's integration with a user interface looks like this:
 
 ![](/images/UI.png)
 
@@ -173,16 +171,24 @@ Check the demonstration video for more details
 
 
 ## Citation
-If you feel this work is helpful please cite the the main publication of Plumber (ICWE 2021 citation will be updated when available)
+If you feel this work is helpful please cite the the main publication of Plumber
 ```bib
-@inproceedings{plumber-preprint,
-    title = "Better Call the Plumber: Orchestrating Dynamic Information Extraction Pipelines",
-    author = "Jaradeh, Mohamad Yaser and
-             Singh, Kuldeep and
-             Stocker, Markus and
-             Both, Andreas and
-             S\"oren Auer",
-    year = "2021",
-    journal= "arXiv preprint arXiv:2102.10966",
+@InProceedings{plumber-icwe,
+    author="Jaradeh, Mohamad Yaser
+    and Singh, Kuldeep
+    and Stocker, Markus
+    and Both, Andreas
+    and Auer, S{\"o}ren",
+    editor="Brambilla, Marco
+    and Chbeir, Richard
+    and Frasincar, Flavius
+    and Manolescu, Ioana",
+    title="Better Call the Plumber: Orchestrating Dynamic Information Extraction Pipelines",
+    booktitle="Web Engineering",
+    year="2021",
+    publisher="Springer International Publishing",
+    address="Cham",
+    pages="240--254",
+    isbn="978-3-030-74296-6"
 }
 ```
